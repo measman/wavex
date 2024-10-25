@@ -16,7 +16,7 @@ class redirectAdmin
      */
     public function handle(Request $request, Closure $next, $gaurd = null): Response
     {
-        if(Auth::gaurd($gaurd)->check() && Auth::user()->isAdmin = 1){
+        if (Auth::gaurd($gaurd)->check() && Auth::user()->isAdmin == true) {
             return redirect()->route('admin.dashboard');
         }
         return $next($request);

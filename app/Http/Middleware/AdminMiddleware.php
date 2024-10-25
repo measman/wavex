@@ -16,9 +16,9 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::check() && Auth::user()->isAdmin = 1){
+        if (Auth::check() && Auth::user()->isAdmin == true) {
             return $next($request);
         }
-        return redirect()->route('home')->with('error','Access denied. You are not an admin.');
+        return redirect()->route('dashboard')->with('error', 'Access denied. You are not an admin.');
     }
 }
