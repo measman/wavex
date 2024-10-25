@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Currency;
+use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,10 @@ class FeeFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'transaction_id' => Transaction::factory(),
+            'amount' => $this->faker->randomFloat(2, 1, 100),
+            'currency_id' => Currency::factory(),
+            'description' => $this->faker->sentence(),
         ];
     }
 }
