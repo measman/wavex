@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\ExchangeRateController;
+use App\Models\ExchangeRate;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,6 +39,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'redirectAdmin'] , function (
 Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard',[AdminController::class,'index'])->name('admin.dashboard');
     Route::get('/currencies', [CurrencyController::class, 'index'])->name('admin.currencies.index');
+    Route::get('/exchangerate', [ExchangeRateController::class, 'index'])->name('admin.exchangerate.index');
 });
 
 
