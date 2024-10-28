@@ -1,12 +1,31 @@
 <script setup>
 import AdminLayout from '../Components/AdminLayout.vue';
+import { usePage, useForm } from '@inertiajs/vue3';
+
+defineProps({
+    exchangerate: Object,
+    test: String
+});
+
+// let exchangerate = usePage().props.exchangerate;
+
+// const form = useForm({
+//     from_currency_id: exchangerate.from_currency.id,
+//     to_currency_id: exchangerate.to_currency.id,
+//     rate: exchangerate.rate
+// });
+
+// const updateexcahngerate = () => {
+//     console.log(form);
+// }
 </script>
+
 <template>
-    <AdminLayout>
+    <!-- <AdminLayout>
         <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
             <div class="lg:grid lg:grid-cols-12 lg:gap-x-5">
                 <div class="space-y-6 sm:px-6 lg:px-0 lg:col-span-12">
-                    <form @submit.prevent="createStudent">
+                    <form @submit.prevent="updateexcahngerate">
                         <div class="shadow sm:rounded-md sm:overflow-hidden">
                             <div class="bg-white py-6 px-4 space-y-6 sm:p-6">
                                 <div>
@@ -25,13 +44,15 @@ import AdminLayout from '../Components/AdminLayout.vue';
                                         <label for="class_id" class="block text-sm font-medium text-gray-700">
                                             Currency From 
                                         </label>
-                                        <select  id="currency_from"
+                                        <select  
+                                            v-model="from_currency_id"
+                                            id="currency_from"
                                             class="{'mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm}"
                                             
                                             required>
                                             <option value="">Select</option>
-                                            <!-- <option v-for="item in classes.data" :key="item.id" :value="item.id">
-                                                {{ item.name }}</option> -->
+                                            <option v-for="item in currencies.data" :key="item.id" :value="item.id">
+                                                {{ item.name }}</option>
                                         </select>
                                     </div>
 
@@ -39,30 +60,31 @@ import AdminLayout from '../Components/AdminLayout.vue';
                                         <label for="section_id" class="block text-sm font-medium text-gray-700">
                                             Currency To
                                         </label>
-                                        <select  id="currenct_to"
+                                        <select  
+                                            v-model="to_currency_id"
+                                            id="currenct_to"
                                             class="{'mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm}"
                                            
                                             required>
                                             <option value="">Select</option>
-                                            <!-- <option v-for="section in sections.data" :key="section.id"
-                                                :value="section.id">{{ section.name }}</option> -->
+                                            <option v-for="item2 in currencies.data" :key="item2.id"
+                                                :value="item2.id">{{ item2.name }}</option>
                                         </select>
                                     </div>
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="rate" class="block text-sm font-medium text-gray-700">
                                             Rate
                                         </label>
-                                        <input  type="text" id="rate"
+                                        <input  
+                                            v-model="rate"
+                                            type="text" id="rate"
                                             class="{'mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm}"
                                             required />
                                     </div>
                                 </div>
                             </div>
                             <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                                <a
-                                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-4">
-                                Cancel
-                            </a>
+                                
                                 <button type="submit"
                                     class="bg-indigo-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     Update
@@ -73,5 +95,5 @@ import AdminLayout from '../Components/AdminLayout.vue';
                 </div>
             </div>
         </div>
-    </AdminLayout>
+    </AdminLayout> -->
 </template>
