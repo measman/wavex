@@ -4,6 +4,9 @@ use App\Http\Middleware\redirectAdmin;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -26,4 +29,18 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
+        $exceptions->report(function (Exception $e) { 
+            $data = [
+                'method' => request()->getMethod(),
+                'message' => $e->getMessage(),
+                'user' => Auth::id(),
+                'data' => request()->all(),
+            ];
+    
+            if ($e instanceof ValidationException) {
+                $data['errors'] = $e->errors();
+            }
+    
+            Log::channel('daily')->info(json_encode($data, JSON_PRETTY_PRINT));      
+        });
     })->create();

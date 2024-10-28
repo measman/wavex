@@ -1,7 +1,13 @@
 <script setup>
-import { Link, usePage } from '@inertiajs/vue3';
-const exchangerates = usePage().props.exchangerates;
-console.log(exchangerates);
+import { usePage } from '@inertiajs/vue3';
+
+defineProps({
+    exchangerates: Object
+})
+
+
+// const exchangerates = usePage().props.exchangerates;
+// console.log(exchangerates);
 </script>
 
 <template>
@@ -50,15 +56,15 @@ console.log(exchangerates);
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-200 bg-white">
-                                        <tr v-for="exrate in exchangerates" :key="exrate.id">
+                                        <tr v-for="exrate in exchangerates.data" :key="exrate.id">
                                             <td
                                                 class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                                                 {{ exrate.id }}</td>
                                             <td
                                                 class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                {{ exrate.from_currency_id }}</td>
+                                                {{ exrate.from_currency.code }}</td>
                                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{
-                                                exrate.to_currency_id }}</td>
+                                                exrate.to_currency.code }}</td>
                                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ exrate.rate
                                                 }}</td>
                                             <td
