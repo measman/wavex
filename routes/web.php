@@ -40,6 +40,10 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard',[AdminController::class,'index'])->name('admin.dashboard');
     Route::get('/currencies', [CurrencyController::class, 'index'])->name('admin.currencies.index');
     Route::get('/exchangerate', [ExchangeRateController::class, 'index'])->name('admin.exchangerate.index');
+    Route::get('/exchangerateedit/{id}', [ExchangeRateController::class, 'edit'])->name('admin.exchangerate.edit');
+    Route::get('/exchangerateadd', [ExchangeRateController::class, 'add'])->name('admin.exchangerate.add');
+    Route::post('/exchangeratestore', [ExchangeRateController::class, 'store'])->name('exchangeratestore');
+
 });
 
 
