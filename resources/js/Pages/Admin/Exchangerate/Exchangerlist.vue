@@ -1,9 +1,12 @@
 <script setup>
-import { usePage } from '@inertiajs/vue3';
+import { usePage, Link } from '@inertiajs/vue3';
 
 defineProps({
-    exchangerates: Object
-})
+    exchangerates: {
+        type:Object,
+        required:true
+    }
+});
 
 
 // const exchangerates = usePage().props.exchangerates;
