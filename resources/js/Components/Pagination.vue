@@ -5,18 +5,13 @@ defineProps({
     data:{
         type:Object,
         required:true,
+    },
+    updatedPageNumber:{
+        type:Function,
+        required:true
     }
 })
 
-const updatePageNumber = (link) => {
-    let pageNumber = link.url.split("=")[1];
-    //console.log(pageNumber);
-    router.visit('/admin/exchangerate?page=' + pageNumber, {
-        preserveScroll: true
-    });
-}
-
-//console.log(usePage().props.data.meta);
 </script>
 <template>
     <div class="max-w-7xl mx-auto py-6">
@@ -52,7 +47,7 @@ const updatePageNumber = (link) => {
                                 aria-label="Pagination"
                             >
                                 <button
-                                    @click.prevent="updatePageNumber(link)"
+                                    @click.prevent="updatedPageNumber(link)"
                                     v-for="(link,index) in data.meta.links"
                                     :key="index"
                                     :disabled="link.active || !link.url"
