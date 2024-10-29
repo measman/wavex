@@ -20,6 +20,8 @@ class Transaction extends Model
         'status',
     ];
 
+    protected $with = ['user','fromWallet','toWallet', 'exchangeRate', 'fees'];
+
     public function user()
     {
         return $this->belongsTo(User::class);
