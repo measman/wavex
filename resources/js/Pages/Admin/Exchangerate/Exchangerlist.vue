@@ -1,6 +1,6 @@
 <script setup>
-import { usePage ,Link } from '@inertiajs/vue3';
-
+import { usePage ,Link,useForm } from '@inertiajs/vue3';
+import Pagination from '@/Components/Pagination.vue';
 defineProps({
     exchangerates: {
         type:Object,
@@ -8,9 +8,12 @@ defineProps({
     }
 });
 
-
-// const exchangerates = usePage().props.exchangerates;
-// console.log(exchangerates);
+const deleteForm=useForm({});
+const deleteexchangerate = (exchangerateId) =>{
+    if (confirm('Are you sure you want to delete?')) {
+        deleteForm.delete(route('exchangerate.destroy',exchangerateId));
+    }
+}
 </script>
 
 <template>
@@ -74,7 +77,11 @@ defineProps({
                                                 class="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
                                                 <Link :href="route('exchangerate.edit',exrate.id)"
                                                     class="text-indigo-600 hover:text-indigo-900">Edit</Link>
-                                                <button class="text-indigo-600 hover:text-indigo-900 px-2"> delete</button>
+                                                    <Link 
+                                                        @click="deleteexchangerate(exrate.id)"
+                                                        class="ml-2 text-indigo-600 hover:text-indigo-900">
+                                                        Delete
+                                                    </Link>
 
                                             </td>
                                         </tr>
@@ -83,7 +90,7 @@ defineProps({
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- <Pagination :data="students" /> -->
+                            <Pagination :data="exchangerates" />
                         </div>
                     </div>
                 </div>
