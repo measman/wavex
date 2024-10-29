@@ -5,8 +5,6 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ExchangeRateController;
-use App\Http\Controllers\UserController;
-use App\Models\ExchangeRate;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -40,14 +38,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'redirectAdmin'] , function (
 
 Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard',[AdminController::class,'index'])->name('admin.dashboard');
-    Route::get('/currencies', [CurrencyController::class, 'index'])->name('admin.currencies.index');
-    Route::get('/exchangerate', [ExchangeRateController::class, 'index'])->name('admin.exchangerate.index');
-    Route::get('/exchangerateedit/{id}', [ExchangeRateController::class, 'edit'])->name('admin.exchangerate.edit');
-    Route::get('/exchangerateadd', [ExchangeRateController::class, 'add'])->name('admin.exchangerate.add');
-    Route::post('/exchangeratestore', [ExchangeRateController::class, 'store'])->name('exchangeratestore');
-
-    Route::get('/user', [UserController::class, 'index'])->name('admin.user.index');
-
+    Route::resource('/currencies', CurrencyController::class);
+    Route::resource('/exchangerate', ExchangeRateController::class);
 });
 
 

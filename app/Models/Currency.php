@@ -12,6 +12,8 @@ class Currency extends Model
 
     protected $fillable = ['code', 'name', 'symbol'];
 
+    protected $with = ['wallets'];
+
     public function wallets()
     {
         return $this->hasMany(Wallet::class);

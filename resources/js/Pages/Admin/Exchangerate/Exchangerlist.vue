@@ -1,9 +1,12 @@
 <script setup>
-import { usePage } from '@inertiajs/vue3';
+import { usePage ,Link } from '@inertiajs/vue3';
 
 defineProps({
-    exchangerates: Object
-})
+    exchangerates: {
+        type:Object,
+        required:true
+    }
+});
 
 
 // const exchangerates = usePage().props.exchangerates;
@@ -23,7 +26,7 @@ defineProps({
                     </div>
 
                     <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                        <Link :href="route('admin.exchangerate.add')"
+                        <Link :href="route('exchangerate.create')"
                             class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">
                         Add Exchange Rate
                         </Link>
@@ -69,7 +72,7 @@ defineProps({
                                                 }}</td>
                                             <td
                                                 class="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
-                                                <Link :href="route('admin.exchangerate.edit', exrate.id)"
+                                                <Link :href="route('exchangerate.edit',exrate.id)"
                                                     class="text-indigo-600 hover:text-indigo-900">Edit</Link>
                                                 <button class="text-indigo-600 hover:text-indigo-900 px-2"> delete</button>
 

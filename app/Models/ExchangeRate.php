@@ -12,6 +12,8 @@ class ExchangeRate extends Model
 
     protected $fillable = ['from_currency_id', 'to_currency_id', 'rate'];
 
+    protected $with = ['fromCurrency', 'toCurrency'];
+
     public function fromCurrency()
     {
         return $this->belongsTo(Currency::class, 'from_currency_id');

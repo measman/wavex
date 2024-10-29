@@ -1,79 +1,71 @@
 <script setup>
 import { usePage , useForm} from '@inertiajs/vue3';
 import AdminLayout from '../Components/AdminLayout.vue';
+defineProps({
+    currency:{type:Object,required:true}
+})
 
-const currencies=usePage().props.currencies;
-console.log(currencies);
+let currency=usePage().props.currency.data;
+// console.log(currencies);
 const form = useForm({
-    from_currency_id:"",
-    to_currency_id:"",
-    rate:""
+    name:currency?.name,
+    symbol:currency?.symbol,
+    code:currency?.code
 });
 
-const createexchangerate = () =>{
+const createCurrency = () =>{
     console.log(form);
-    form.post(route('exchangeratestore'));
+    form.put(route('currencies.update',currency.id));
 }
-console.log(form);
+// console.log(form);
 </script>
 <template>
     <AdminLayout>
         <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
             <div class="lg:grid lg:grid-cols-12 lg:gap-x-5">
                 <div class="space-y-6 sm:px-6 lg:px-0 lg:col-span-12">
-                    <form @submit.prevent="createexchangerate">
+                    <form @submit.prevent="createCurrency">
                         <div class="shadow sm:rounded-md sm:overflow-hidden">
                             <div class="bg-white py-6 px-4 space-y-6 sm:p-6">
                                 <div>
                                     <h3 class="text-lg leading-6 font-medium text-gray-900">
-                                        Exchange Rate
+                                        Currency
                                     </h3>
                                     <p class="mt-1 text-sm text-gray-500">
-                                        Use this form to create a Excahnge Rate.
+                                        Use this form to create a Currency.
                                     </p>
                                 </div>
 
                                 <div class="grid grid-cols-6 gap-6">
                                     
-
                                     <div class="col-span-6 sm:col-span-3">
-                                        <label for="class_id" class="block text-sm font-medium text-gray-700">
-                                            Currency From 
-                                        </label>
-                                        <select  
-                                            v-model="form.from_currency_id"
-                                            id="currency_from"
-                                            class="{'mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm}"
-                                            
-                                            required>
-                                            <option value="">Select</option>
-                                            <option v-for="item in currencies" :key="item.id" :value="item.id">
-                                                {{ item.name }}</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-span-6 sm:col-span-3">
-                                        <label for="section_id" class="block text-sm font-medium text-gray-700">
-                                            Currency To
-                                        </label>
-                                        <select  
-                                            v-model="form.to_currency_id"
-                                            id="currency_to"
-                                            class="{'mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm}"
-                                           
-                                            required>
-                                            <option value="">Select</option>
-                                            <option v-for="item2 in currencies" :key="item2.id"
-                                                :value="item2.id">{{ item2.name }}</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-span-6 sm:col-span-3">
-                                        <label for="rate" class="block text-sm font-medium text-gray-700">
-                                            Rate
+                                        <label for="code" class="block text-sm font-medium text-gray-700">
+                                            Code
                                         </label>
                                         <input 
-                                            v-model="form.rate"
-                                            type="text" id="rate"
+                                            v-model="form.code"
+                                            type="text" id="code"
+                                            class="{'mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm}"
+                                            required />
+                                    </div>
+                                    
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <label for="name" class="block text-sm font-medium text-gray-700">
+                                            Name
+                                        </label>
+                                        <input 
+                                            v-model="form.name"
+                                            type="text" id="name"
+                                            class="{'mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm}"
+                                            required />
+                                    </div>
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <label for="symbol" class="block text-sm font-medium text-gray-700">
+                                            Symbol
+                                        </label>
+                                        <input 
+                                            v-model="form.symbol"
+                                            type="text" id="symbol"
                                             class="{'mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm}"
                                             required />
                                     </div>
