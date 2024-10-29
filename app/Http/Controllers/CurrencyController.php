@@ -13,7 +13,7 @@ use Inertia\Inertia;
 class CurrencyController extends Controller
 {
     public function index(){
-        $currencies = CurrencyResource::collection(Currency::all());
+        $currencies = CurrencyResource::collection(Currency::paginate(10));
         return Inertia::render('Admin/Currencies/index', ['currencies'=>$currencies]);
     }
 
@@ -59,8 +59,9 @@ class CurrencyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Currency $currency)
     {
-        //
+        $currency->delete();
+        return redirect()->route('currencies.index');
     }
 }

@@ -22,6 +22,12 @@ class DatabaseSeeder extends Seeder
             ['code' => 'GBP', 'name' => 'British Pound', 'symbol' => '£'],
             ['code' => 'JPY', 'name' => 'Japanese Yen', 'symbol' => '¥'],
             ['code' => 'AUD', 'name' => 'Australian Dollar', 'symbol' => 'A$'],
+            ['code' => 'THB', 'name' => 'Thailand Baht', 'symbol' => '฿'],
+            ['code' => 'NPR', 'name' => 'Nepali Rupee', 'symbol' => '₨'],
+            ['code' => 'CNY', 'name' => 'China Yuan', 'symbol' => '¥'],
+            ['code' => 'MYR', 'name' => 'Malaysia Ringgit', 'symbol' => 'RM'],
+            ['code' => 'KRW', 'name' => 'Korea (South) Won', 'symbol' => '₩'],
+            ['code' => 'HKD', 'name' => 'Hong Kong Dollar', 'symbol' => '$'],
         ];
 
         foreach ($currencies as $currency) {
