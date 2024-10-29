@@ -13,9 +13,10 @@ use Illuminate\Http\Request;
 
 class ExchangeRateController extends Controller
 {
-    public function index(){
-        $exchangerates=  ExchangeRateResource::collection(ExchangeRate::paginate(10));
-        return Inertia::render('Admin/Exchangerate/index', ['exchangerates'=>$exchangerates]);
+    public function index(Request $request){
+        $exchangerateQuery = ExchangeRate::search($request);
+        $exchangerates=  ExchangeRateResource::collection($exchangerateQuery->paginate(10));
+        return Inertia::render('Admin/Exchangerate/index', ['exchangerates'=>$exchangerates,'search' => $request->search ?? '',]);
 
     }
     public function edit(ExchangeRate $exchangerate)
