@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreExchangerateRequest;
+use App\Http\Requests\UpdateExchangerateRequest;
 use App\Http\Resources\CurrencyResource;
 use App\Models\Currency;
 use App\Http\Resources\ExchangeRateResource;
@@ -12,26 +14,29 @@ use Illuminate\Http\Request;
 class ExchangeRateController extends Controller
 {
     public function index(){
-        $exchangerates=  ExchangeRateResource::collection(ExchangeRate::with(['fromCurrency','toCurrency'])->paginate(10));
+        $exchangerates=  ExchangeRateResource::collection(ExchangeRate::with(['fromCurrency','toCurrency'])->get());
         return Inertia::render('Admin/Exchangerate/index', ['exchangerates'=>$exchangerates]);
 
     }
-    public function edit(ExchangeRate $id) {
-        // $currencies=CurrencyResource::collection(Currency::all());
-        return Inertia::render('Admin/Exchangerate/Edit',['test'=>'test','exchangerate'=>ExchangeRateResource::make($id)]);
+    public function edit(ExchangeRate $exchangerate)
+    {
+        $currencies = CurrencyResource::collection(Currency::all());
+        return Inertia::render('Admin/Exchangerate/Edit', [
+            'exchangerate' => ExchangeRateResource::make($exchangerate),
+            'currencies' => $currencies
+        ]);
     }
+    
     public function create() {
         $currencies=CurrencyResource::collection(Currency::all());
         return Inertia::render('Admin/Exchangerate/Create',['currencies'=>$currencies]); // Correct spelling
     }
-    public function store(Request $request) {
-        $validatedData = $request->validate([
-            'from_currency_id' => 'required|exists:currencies,id',
-            'to_currency_id' => 'required|exists:currencies,id',
-            'rate' => 'required|numeric',
-        ]);
-    
-        ExchangeRate::create($validatedData);
+    public function store(StoreExchangerateRequest $request) {
+        ExchangeRate::create($request->validated());
         return redirect()->route('exchangerate.index');
     } 
+    public function update(UpdateExchangerateRequest $request, ExchangeRate $exchangerate){
+        $exchangerate->update($request->validated());
+        return redirect()->route('exchangerate.index');
+    }
 }
