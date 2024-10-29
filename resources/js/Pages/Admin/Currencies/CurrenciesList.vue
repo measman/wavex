@@ -1,5 +1,6 @@
 <script setup>
-import { usePage, Link } from '@inertiajs/vue3';
+import { usePage, Link, useForm } from '@inertiajs/vue3';
+import Pagination from '@/Components/Pagination.vue';
 
 defineProps({
     currencies: {
@@ -7,6 +8,12 @@ defineProps({
         required:true
     }
 });
+const deleteForm=useForm({});
+const deletecurrency = (currencyId) =>{
+    if (confirm('Are you sure you want to delete?')) {
+        deleteForm.delete(route('exchangerate.destroy',currencyId));
+    }
+}
 </script>
 
 <template>
@@ -73,7 +80,11 @@ defineProps({
                                                 class="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
                                                 <Link :href="route('currencies.edit', currency.id)"
                                                     class="text-indigo-600 hover:text-indigo-900">Edit</Link>
-                                                <Link :href="route('currencies.destroy', currency.id)" class="text-indigo-600 hover:text-indigo-900 px-2"> Delete</Link>
+                                                    <Link 
+                                                        @click="deletecurrency(currency.id)"
+                                                        class="ml-2 text-indigo-600 hover:text-indigo-900">
+                                                        Delete
+                                                    </Link>
 
                                             </td>
                                         </tr>
@@ -82,7 +93,7 @@ defineProps({
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- <Pagination :data="students" /> -->
+                            <Pagination :data="currencies" />
                         </div>
                     </div>
                 </div>

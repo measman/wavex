@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 class ExchangeRateController extends Controller
 {
     public function index(){
-        $exchangerates=  ExchangeRateResource::collection(ExchangeRate::with(['fromCurrency','toCurrency'])->paginate(10));
+        $exchangerates=  ExchangeRateResource::collection(ExchangeRate::paginate(10));
         return Inertia::render('Admin/Exchangerate/index', ['exchangerates'=>$exchangerates]);
 
     }

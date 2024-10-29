@@ -8,10 +8,11 @@ defineProps({
     }
 })
 
-const updatePageNumber = (link) => {
+const updatePageNumber = (link,path) => {
     let pageNumber = link.url.split("=")[1];
-    //console.log(pageNumber);
-    router.visit('/admin/exchangerate?page=' + pageNumber, {
+    let splitPath = path.split('/');
+    // console.log(splitPath[splitPath.length-1]);
+    router.visit('/admin/'+splitPath[splitPath.length-1]+'?page=' + pageNumber, {
         preserveScroll: true
     });
 }
@@ -52,7 +53,7 @@ const updatePageNumber = (link) => {
                                 aria-label="Pagination"
                             >
                                 <button
-                                    @click.prevent="updatePageNumber(link)"
+                                    @click.prevent="updatePageNumber(link,data.meta.path)"
                                     v-for="(link,index) in data.meta.links"
                                     :key="index"
                                     :disabled="link.active || !link.url"
