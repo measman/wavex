@@ -1,10 +1,17 @@
 <script setup>
-import { usePage } from '@inertiajs/vue3';
+import { usePage,Link,useForm } from '@inertiajs/vue3';
 
 defineProps({
-    user:Object
+    user:Object,
+    required:true
 })
 
+const deleteForm=useForm({});
+const deleteuser = (userId) =>{
+    if (confirm('Are you sure you want to delete?')) {
+        deleteForm.delete(route('user.destroy',userId));
+    }
+}
 
 </script>
 
@@ -21,7 +28,7 @@ defineProps({
                     </div>
 
                     <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                        <Link :href="route('admin.exchangerate.add')"
+                        <Link :href="route('user.create')"
                             class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">
                         Add User
                         </Link>
@@ -65,11 +72,22 @@ defineProps({
                                                 user.last_login }}</td>
                                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ user.created_at
                                                 }}</td>
+                                            <!-- <td
+                                                class="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
+                                                <a href="#"
+                                                    class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                                <button class="text-indigo-600 hover:text-indigo-900 px-2"> delete</button>
+
+                                            </td> -->
                                             <td
                                                 class="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
-                                                <Link :href="route('admin.exchangerate.edit', user.id)"
+                                                <Link :href="route('user.edit',user.id)"
                                                     class="text-indigo-600 hover:text-indigo-900">Edit</Link>
-                                                <button class="text-indigo-600 hover:text-indigo-900 px-2"> delete</button>
+                                                    <Link 
+                                                        @click="deleteuser(user.id)"
+                                                        class="ml-2 text-indigo-600 hover:text-indigo-900">
+                                                        Delete
+                                                    </Link>
 
                                             </td>
                                         </tr>
