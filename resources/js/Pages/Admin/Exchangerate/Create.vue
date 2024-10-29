@@ -2,8 +2,11 @@
 import { usePage , useForm} from '@inertiajs/vue3';
 import AdminLayout from '../Components/AdminLayout.vue';
 
-const currencies=usePage().props.currencies;
-console.log(currencies);
+// const currencies=usePage().props.currencies;
+defineProps({
+    currencies: Object
+})
+// console.log(currencies.data);
 const form = useForm({
     from_currency_id:"",
     to_currency_id:"",
@@ -12,7 +15,7 @@ const form = useForm({
 
 const createexchangerate = () =>{
     console.log(form);
-    form.post(route('exchangeratestore'));
+    form.post(route('exchangerate.store'));
 }
 console.log(form);
 </script>
@@ -47,7 +50,7 @@ console.log(form);
                                             
                                             required>
                                             <option value="">Select</option>
-                                            <option v-for="item in currencies" :key="item.id" :value="item.id">
+                                            <option v-for="item in currencies.data" :key="item.id" :value="item.id">
                                                 {{ item.name }}</option>
                                         </select>
                                     </div>
@@ -63,7 +66,7 @@ console.log(form);
                                            
                                             required>
                                             <option value="">Select</option>
-                                            <option v-for="item2 in currencies" :key="item2.id"
+                                            <option v-for="item2 in currencies.data" :key="item2.id"
                                                 :value="item2.id">{{ item2.name }}</option>
                                         </select>
                                     </div>
