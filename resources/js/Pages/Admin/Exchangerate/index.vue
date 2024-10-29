@@ -1,12 +1,12 @@
 <script setup>
 import AdminLayout from '../Components/AdminLayout.vue';
-import CurrenciesList from './CurrenciesList.vue';
+import ExchangeRateList from './Exchangerlist.vue';
 defineProps({
-    currencies: Object
+    exchangerates: Object
 })
 </script>
 <template>
     <AdminLayout>
-        <CurrenciesList :currencies="currencies" />    
+        <ExchangeRateList :exchangerates="exchangerates" />    
     </AdminLayout>
 </template>

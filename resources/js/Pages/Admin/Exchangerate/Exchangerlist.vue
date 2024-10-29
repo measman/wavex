@@ -1,12 +1,16 @@
 <script setup>
-import { usePage, Link } from '@inertiajs/vue3';
+import { usePage ,Link } from '@inertiajs/vue3';
 
 defineProps({
-    currencies: {
+    exchangerates: {
         type:Object,
         required:true
     }
 });
+
+
+// const exchangerates = usePage().props.exchangerates;
+// console.log(exchangerates);
 </script>
 
 <template>
@@ -16,15 +20,15 @@ defineProps({
                 <div class="sm:flex sm:items-center">
                     <div class="sm:flex-auto">
                         <h1 class="text-xl font-semibold text-gray-900">
-                            Currencies
+                            Exchange Rate
                         </h1>
 
                     </div>
 
                     <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                        <Link :href="route('currencies.create')"
+                        <Link :href="route('exchangerate.create')"
                             class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">
-                        Add Currency
+                        Add Exchange Rate
                         </Link>
 
                     </div>
@@ -42,38 +46,35 @@ defineProps({
                                                 ID</th>
                                             <th scope="col"
                                                 class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                                                CODE</th>
+                                                Exchange From</th>
                                             <th scope="col"
                                                 class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                                                Name</th>
+                                                Exchange To</th>
                                             <th scope="col"
-                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                                                Symbol</th>
-                                            
+                                                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Rate
+                                            </th>
                                             <th scope="col"
                                                 class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Action
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-200 bg-white">
-                                        <tr v-for="currency in currencies.data" :key="currency.id">
+                                        <tr v-for="exrate in exchangerates.data" :key="exrate.id">
                                             <td
                                                 class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                {{ currency.id }}</td>
+                                                {{ exrate.id }}</td>
                                             <td
                                                 class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                {{ currency.code }}</td>
-                                            <td
-                                                class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                {{ currency.name }}</td>
+                                                {{ exrate.from_currency.code }}</td>
                                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{
-                                                currency.symbol }}</td>
-                                           
+                                                exrate.to_currency.code }}</td>
+                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ exrate.rate
+                                                }}</td>
                                             <td
                                                 class="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
-                                                <Link :href="route('currencies.edit', currency.id)"
+                                                <Link :href="route('exchangerate.edit',exrate.id)"
                                                     class="text-indigo-600 hover:text-indigo-900">Edit</Link>
-                                                <Link :href="route('currencies.destroy', currency.id)" class="text-indigo-600 hover:text-indigo-900 px-2"> Delete</Link>
+                                                <button class="text-indigo-600 hover:text-indigo-900 px-2"> delete</button>
 
                                             </td>
                                         </tr>
