@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ExchangeRateController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
 });
 
 
@@ -40,6 +42,9 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard',[AdminController::class,'index'])->name('admin.dashboard');
     Route::resource('/currencies', CurrencyController::class);
     Route::resource('/exchangerate', ExchangeRateController::class);
+
+    
+    Route::resource('/user',UserController::class);
     Route::resource('/transactions', TransactionController::class);
 });
 
