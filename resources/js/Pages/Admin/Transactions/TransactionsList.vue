@@ -4,7 +4,7 @@ import Pagination from '@/Components/Pagination.vue';
 import {ref, computed, watch} from "vue";
 
 defineProps({
-    currencies: {
+    transactions: {
         type:Object,
         required:true
     }
@@ -14,8 +14,9 @@ let search = ref(usePage().props.search),
  pageNumber =ref(1);
 
 
- let currenciesUrl = computed(()=> {
-    let url = new URL(route("currencies.index"));
+ 
+ let transactionsUrl = computed(()=> {
+    let url = new URL(route("transactions.index"));
     url.searchParams.append("page", pageNumber.value);
     // if(search.value){
     //     url.searchParams.append("search",search.value);
@@ -23,9 +24,9 @@ let search = ref(usePage().props.search),
     return url;
 });
 
-watch(()=> currenciesUrl.value,
-    (updatedcurrenciesUrl) => {
-        router.visit(updatedcurrenciesUrl,{
+watch(()=> transactionsUrl.value,
+    (updatedtransactionsUrl) => {
+        router.visit(updatedtransactionsUrl,{
             preserveScroll: true,
             preserveState: true,
             replace:true,
@@ -37,11 +38,10 @@ const updatedPageNumber = (link) => {
     pageNumber.value = link.url.split("=")[1];
 }
 
-
 const deleteForm=useForm({});
-const deletecurrency = (currencyId) =>{
+const deletetransaction = (transactionId) =>{
     if (confirm('Are you sure you want to delete?')) {
-        deleteForm.delete(route('exchangerate.destroy',currencyId));
+        deleteForm.delete(route('transactions.destroy',transactionId));
     }
 }
 </script>
@@ -53,15 +53,15 @@ const deletecurrency = (currencyId) =>{
                 <div class="sm:flex sm:items-center">
                     <div class="sm:flex-auto">
                         <h1 class="text-xl font-semibold text-gray-900">
-                            Currencies
+                            Transactions
                         </h1>
 
                     </div>
 
                     <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                        <Link :href="route('currencies.create')"
+                        <Link :href="route('transactions.create')"
                             class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">
-                        Add Currency
+                        Add Transaction
                         </Link>
 
                     </div>
@@ -79,13 +79,19 @@ const deletecurrency = (currencyId) =>{
                                                 ID</th>
                                             <th scope="col"
                                                 class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                                                CODE</th>
+                                                User</th>
                                             <th scope="col"
                                                 class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                                                Name</th>
+                                                From Amount</th>
                                             <th scope="col"
                                                 class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                                                Symbol</th>
+                                                To Amount</th>
+                                                <th scope="col"
+                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                                                Exchange Rate</th>
+                                            <th scope="col"
+                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                                                Status</th>
                                             
                                             <th scope="col"
                                                 class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Action
@@ -93,25 +99,31 @@ const deletecurrency = (currencyId) =>{
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-200 bg-white">
-                                        <tr v-for="currency in currencies.data" :key="currency.id">
+                                        <tr v-for="transaction in transactions.data" :key="transaction.id">
                                             <td
                                                 class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                {{ currency.id }}</td>
+                                                {{ transaction.id }}</td>
                                             <td
                                                 class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                {{ currency.code }}</td>
+                                                {{ transaction.user.name }}</td>
                                             <td
                                                 class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                {{ currency.name }}</td>
+                                                {{ transaction.exchange_rate.from_currency.code }} {{ transaction.from_amount }}</td>
+                                                <td
+                                                class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                                {{ transaction.exchange_rate.to_currency.code }} {{ transaction.to_amount }}</td>
+                                            <td
+                                                class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                                {{ transaction.exchange_rate.rate }}</td>
                                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{
-                                                currency.symbol }}</td>
+                                                transaction.status }}</td>
                                            
                                             <td
                                                 class="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
-                                                <Link :href="route('currencies.edit', currency.id)"
+                                                <Link :href="route('transactions.edit', transaction.id)"
                                                     class="text-indigo-600 hover:text-indigo-900">Edit</Link>
                                                     <Link 
-                                                        @click="deletecurrency(currency.id)"
+                                                        @click="deletecurrency(transaction.id)"
                                                         class="ml-2 text-indigo-600 hover:text-indigo-900">
                                                         Delete
                                                     </Link>
@@ -123,7 +135,7 @@ const deletecurrency = (currencyId) =>{
                                     </tbody>
                                 </table>
                             </div>
-                            <Pagination :data="currencies" :updatedPageNumber="updatedPageNumber" />
+                            <Pagination :data="transactions" :updatedPageNumber="updatedPageNumber" />
                         </div>
                     </div>
                 </div>
