@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ExchangeRateController;
+use App\Http\Controllers\WalletController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -39,6 +40,7 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard',[AdminController::class,'index'])->name('admin.dashboard');
     Route::resource('/currencies', CurrencyController::class);
     Route::resource('/exchangerate', ExchangeRateController::class);
+    Route::resource('/wallets', WalletController::class);
 });
 
 
