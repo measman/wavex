@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CurrencyResource;
 use App\Http\Resources\TransactionResource;
+use App\Models\Currency;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class TransactionController extends Controller
 {
-    public function index(){
-        $transactions=  TransactionResource::collection(Transaction::paginate(10));
+    public function index()
+    {
+        $transactions = TransactionResource::collection(Transaction::paginate(10));
         // dd($transactions);
         // return Inertia::render('Admin/Exchangerate/index', ['exchangerates'=>$exchangerates]);
-        return Inertia::render('Admin/Transactions/index', ['transactions'=>$transactions]);
+        return Inertia::render('Admin/Transactions/index', ['transactions' => $transactions]);
 
     }
     public function edit(/*ExchangeRate $exchangerate*/)
@@ -24,20 +27,29 @@ class TransactionController extends Controller
         //     'currencies' => $currencies
         // ]);
     }
-    
-    public function create() {
+
+    public function buy()
+    {
+        $currencies = CurrencyResource::collection(Currency::all());
+        return Inertia::render('Admin/Transactions/Buy', ['currencies' => $currencies]); // Correct spelling
+    }
+    public function sell()
+    {
         // $currencies=CurrencyResource::collection(Currency::all());
         // return Inertia::render('Admin/Exchangerate/Create',['currencies'=>$currencies]); // Correct spelling
     }
-    public function store(/*StoreExchangerateRequest $request*/) {
+    public function store(/*StoreExchangerateRequest $request*/)
+    {
         // ExchangeRate::create($request->validated());
         // return redirect()->route('exchangerate.index');
-    } 
-    public function update(/*UpdateExchangerateRequest $request, ExchangeRate $exchangerate*/){
+    }
+    public function update(/*UpdateExchangerateRequest $request, ExchangeRate $exchangerate*/)
+    {
         // $exchangerate->update($request->validated());
         // return redirect()->route('exchangerate.index');
     }
-    public function destroy(/*ExchangeRate $exchangerate*/){
+    public function destroy(/*ExchangeRate $exchangerate*/)
+    {
         // $exchangerate->delete();
         // return redirect()->route('exchangerate.index');
     }
