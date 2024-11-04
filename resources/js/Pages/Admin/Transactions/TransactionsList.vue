@@ -115,8 +115,8 @@ const deletetransaction = (transactionId) =>{
                                             <td
                                                 class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                                                 {{ transaction.exchange_rate.rate }}</td>
-                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{
-                                                transaction.status }}</td>
+                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 border border-green-100 dark:border-green-500">{{
+                                                transaction.status }}</span></td>
                                            
                                             <td
                                                 class="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
