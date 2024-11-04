@@ -33,22 +33,25 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::group(['prefix' => 'admin', 'middleware' => 'redirectAdmin'] , function () {
-    Route::get('login',[AdminAuthController::class,'showLoginForm'])->name('admin.login');
-    Route::post('login',[AdminAuthController::class,'login'])->name('admin.login.post');
-    Route::post('logout',[AdminAuthController::class,'logout'])->name('admin.logout');
+Route::group(['prefix' => 'admin', 'middleware' => 'redirectAdmin'], function () {
+    Route::get('login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
+    Route::post('login', [AdminAuthController::class, 'login'])->name('admin.login.post');
+    Route::post('logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 });
 
-Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard',[AdminController::class,'index'])->name('admin.dashboard');
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::resource('/currencies', CurrencyController::class);
     Route::resource('/exchangerate', ExchangeRateController::class);
     Route::resource('/wallets', WalletController::class);
 
-    
-    Route::resource('/user',UserController::class);
-    Route::resource('/transactions', TransactionController::class);
+
+    Route::resource('/user', UserController::class);
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/transactions/{id}/edit', [TransactionController::class, 'edit'])->name('transactions.edit');
+    Route::get('/transactions/buy', [TransactionController::class, 'buy'])->name('transactions.buy');
+    Route::get('/transactions/sell', [TransactionController::class, 'sell'])->name('transactions.sell');
 });
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
