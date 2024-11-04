@@ -22,7 +22,7 @@ class SettingsFactory extends Factory
             'company_name' => $this->faker->company(),
             'address' => $this->faker->address,
             'phone' => $this->faker->phoneNumber,
-            'website' => $this->faker->url(),
+            'email' => $this->faker->email(),
             'currency_id' => Currency::factory(),
             'user_id' => User::factory()
         ];

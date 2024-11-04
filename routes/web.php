@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ExchangeRateController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TransactionController;
@@ -51,6 +52,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/transactions/{id}/edit', [TransactionController::class, 'edit'])->name('transactions.edit');
     Route::get('/transactions/buy', [TransactionController::class, 'buy'])->name('transactions.buy');
     Route::get('/transactions/sell', [TransactionController::class, 'sell'])->name('transactions.sell');
+
+    Route::resource('/settings', SettingsController::class);
 });
 
 

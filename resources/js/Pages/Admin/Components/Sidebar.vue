@@ -160,8 +160,8 @@ import { Link } from '@inertiajs/vue3';
             ></path>
           </svg>
         </a>
-        <a
-          href="#"
+        <Link
+          :href="route('settings.index')"
           data-tooltip-target="tooltip-settings"
           class="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer dark:text-gray-400 dark:hover:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600"
         >
@@ -178,7 +178,7 @@ import { Link } from '@inertiajs/vue3';
               clip-rule="evenodd"
             ></path>
           </svg>
-        </a>
+        </Link>
         <div
           id="tooltip-settings"
           role="tooltip"

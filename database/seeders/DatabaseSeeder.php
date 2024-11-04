@@ -9,6 +9,7 @@ use App\Models\ExchangeRate;
 use App\Models\Wallet;
 use App\Models\Transaction;
 use App\Models\Fee;
+use App\Models\Settings;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -29,11 +30,15 @@ class DatabaseSeeder extends Seeder
             ['code' => 'KRW', 'name' => 'Korea (South) Won', 'symbol' => '₩'],
             ['code' => 'HKD', 'name' => 'Hong Kong Dollar', 'symbol' => '$'],
         ];
+        $settings = [
+            ['company_name'=>'WAVE Money Exg', 'address'=>'Bauddha','phone'=>'123456789','email'=>'admin@example.com/','currency_id'=>7,'user_id'=>1],
+        ];
+        
 
         foreach ($currencies as $currency) {
             Currency::create($currency);
         }
-
+        
         // Step 2: Create exchange rates between all currencies
         $allCurrencies = Currency::all();
         foreach ($allCurrencies as $fromCurrency) {
@@ -54,6 +59,9 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@example.com',
             'password' => Hash::make('admin123'),
         ]);
+        foreach ($settings as $setting) {
+            Settings::create($setting);
+        }
 
         // Create wallets for admin
         foreach ($allCurrencies as $currency) {

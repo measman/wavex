@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('company_name');
             $table->string('address');
             $table->string('phone');
-            $table->string('website');
+            $table->string('email');
             $table->foreignId('currency_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
