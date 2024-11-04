@@ -3,11 +3,13 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\BankTransactionController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ExchangeRateController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TransactionController;
+use App\Models\BankTransaction;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -44,6 +46,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::resource('/currencies', CurrencyController::class);
     Route::resource('/exchangerate', ExchangeRateController::class);
     Route::resource('/wallets', WalletController::class);
+    Route::resource('/banktransactions', BankTransactionController::class);
+
 
 
     Route::resource('/user', UserController::class);
