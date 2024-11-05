@@ -52,10 +52,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
 
     Route::resource('/user', UserController::class);
-    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
-    Route::get('/transactions/{id}/edit', [TransactionController::class, 'edit'])->name('transactions.edit');
-    Route::get('/transactions/buy', [TransactionController::class, 'buy'])->name('transactions.buy');
-    Route::get('/transactions/sell', [TransactionController::class, 'sell'])->name('transactions.sell');
+    // Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    // Route::get('/transactions/{id}/edit', [TransactionController::class, 'edit'])->name('transactions.edit');
+    // Route::get('/transactions/buy', [TransactionController::class, 'buy'])->name('transactions.buy');
+    // Route::get('/transactions/sell', [TransactionController::class, 'sell'])->name('transactions.sell');
+
+    Route::resource('/transactions',TransactionController::class);
 
     Route::resource('/settings', SettingsController::class);
 });

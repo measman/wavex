@@ -18,6 +18,7 @@ class Transaction extends Model
         'to_amount',
         'exchange_rate_id',
         'status',
+        'type',
     ];
 
     protected $with = ['user','fromWallet','toWallet', 'exchangeRate', 'fees'];

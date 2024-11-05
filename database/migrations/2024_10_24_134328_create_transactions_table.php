@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->decimal('to_amount', 15, 2);
             $table->foreignId('exchange_rate_id')->constrained();
             $table->enum('status', ['Pending', 'Completed', 'Failed'])->default('Pending');
+            $table->string('type');
             $table->timestamps();
         });
     }
