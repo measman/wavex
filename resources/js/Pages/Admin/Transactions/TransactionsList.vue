@@ -55,24 +55,31 @@ const deletetransaction = (transactionId) => {
                             Transactions
                         </h1>
                     </div>
-
                     <div class="mt-4 sm:mt-0 sm:ml-4 sm:flex-none">
+                        <Link
+                            :href="route('transactions.create')"
+                            class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+                        >
+                            Add Transactions
+                        </Link>
+                    </div>
+                    <!-- <div class="mt-4 sm:mt-0 sm:ml-4 sm:flex-none">
                         <Link
                             :href="route('transactions.buy')"
                             class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
                         >
                             Buy
                         </Link>
-                    </div>
+                    </div> -->
 
-                    <div class="mt-4 sm:mt-0 sm:ml-4 sm:flex-none">
+                    <!-- <div class="mt-4 sm:mt-0 sm:ml-4 sm:flex-none">
                         <Link
                             :href="route('transactions.sell')"
                             class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
                         >
                             Sell
                         </Link>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="mt-8 flex flex-col">
@@ -117,6 +124,12 @@ const deletetransaction = (transactionId) => {
                                                 class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
                                             >
                                                 Exchange Rate
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                                            >
+                                                Type
                                             </th>
                                             <th
                                                 scope="col"
@@ -176,6 +189,8 @@ const deletetransaction = (transactionId) => {
                                                         .rate
                                                 }}
                                             </td>
+                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{
+                                                transaction.type }}</td>
                                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 border border-green-100 dark:border-green-500">{{
                                                 transaction.status }}</span></td>
 
@@ -208,10 +223,10 @@ const deletetransaction = (transactionId) => {
                                     </tbody>
                                 </table>
                             </div>
-                            <Pagination
+                            <!-- <Pagination
                                 :data="transactions"
                                 :updatedPageNumber="updatedPageNumber"
-                            />
+                            /> -->
                         </div>
                     </div>
                 </div>
