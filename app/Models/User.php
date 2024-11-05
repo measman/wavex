@@ -24,6 +24,10 @@ class User extends Authenticatable
         'isAdmin',
     ];
 
+    protected $with =[
+        'settings'
+    ];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -59,4 +63,8 @@ class User extends Authenticatable
         return $this->hasMany(Transaction::class);
     }
     
+    public function settings()
+    {
+        return $this->hasOne(Settings::class);
+    }
 }
