@@ -33,20 +33,21 @@ class TransactionController extends Controller
         $transactions = TransactionResource::collection(
             Transaction::where('user_id', $user_id)->get()
         );
-        $excahngerates=ExchangeRateResource::collection(ExchangeRate::all());
-        return Inertia::render('Admin/Transactions/Create', ['transactions' => $transactions,'excahngerates'=>$excahngerates]); // Correct spelling
+        $excahngerates = ExchangeRateResource::collection(ExchangeRate::all());
+        return Inertia::render('Admin/Transactions/Create', ['transactions' => $transactions, 'excahngerates' => $excahngerates]); // Correct spelling
     }
 
-    public function store(Request $request) {
-        $user_id=Auth::user()->id;
-        $exchangerate_id=$request->exrate['id'];
+    public function store(Request $request)
+    {
+        $user_id = Auth::user()->id;
+        $exchangerate_id = $request->exrate['id'];
         $from_curency_id = $request->exrate['from_currency_id'];
         $to_curency_id = $request->exrate['to_currency_id'];
         $rate = $request->exrate['rate'];
-        $type=$request->type;
-        $amount_from=$request->amount_from;
-        $amount_to=$amount_from * $rate ;
-        $status=$request->status;
+        $type = $request->type;
+        $amount_from = $request->amount_from;
+        $amount_to = $amount_from * $rate;
+        $status = $request->status;
         $from_wallet_id = Wallet::where('currency_id', $from_curency_id)
             ->where('user_id', $user_id)
             ->pluck('id')
@@ -55,7 +56,7 @@ class TransactionController extends Controller
             ->where('user_id', $user_id)
             ->pluck('id')
             ->first();
-        
+
         //dd($request);
         //dd($user_id,$from_wallet_id,$to_wallet_id,$amount_from,$amount_to,$exchangerate_id,$status,$type);
         //Transaction::create($request->validated());
@@ -69,8 +70,29 @@ class TransactionController extends Controller
             'status' => $status,
             'type' => $type,
         ]);
+
+        //dd($from_wallet_id,$amount_from);
+        // dd($to_wallet_id,$amount_to);
+        $from_wallet_balance = Wallet::where('id', $from_wallet_id)
+            ->where('user_id', $user_id)
+            ->pluck('balance')
+            ->first();
+        $to_wallet_balance = Wallet::where('id', $to_wallet_id)
+            ->where('user_id', $user_id)
+            ->pluck('balance')
+            ->first();
+        $new_from_wallet_balance = $from_wallet_balance + $amount_from;
+        $new_to_wallet_balance = $to_wallet_balance - $amount_to;
+        //dd($from_wallet_balance, $to_wallet_balance, $new_from_wallet_balance, $new_to_wallet_balance);
+        Wallet::where('id', $from_wallet_id)
+            ->where('user_id', $user_id)
+            ->update(['balance' => $new_from_wallet_balance]);
+
+        Wallet::where('id', $to_wallet_id)
+            ->where('user_id', $user_id)
+            ->update(['balance' => $new_to_wallet_balance]);
         return redirect()->route('transactions.index');
-    } 
+    }
 
     // public function edit(/*ExchangeRate $exchangerate*/)
     // {
