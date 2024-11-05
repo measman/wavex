@@ -8,13 +8,6 @@ defineProps({
         required: true
     }
 });
-// const deleteForm=useForm({});
-// const deletebanktransactions = (bankId) =>{
-//     if (confirm('Are you sure you want to delete?')) {
-//         console.log(bankId);
-//         deleteForm.delete(route('banktransactions.destroy',bankId));
-//     }
-// }
 const deleteForm = useForm({});
 const deletebanktransactions = (bankId) => {
     if (confirm('Are you sure you want to delete?')) {
@@ -32,39 +25,39 @@ const deletebanktransactions = (bankId) => {
 
 
 
-// let search = ref(usePage().props.search),
-//  pageNumber =ref(1);
+let search = ref(usePage().props.search),
+ pageNumber =ref(1);
 
-// let excahngerateUrl = computed(()=> {
-//     let url = new URL(route("exchangerate.index"));
-//     url.searchParams.append("page", pageNumber.value);
-//     if(search.value){
-//         url.searchParams.append("search",search.value);
-//     }
-//     return url;
-// });
+let banktransaction = computed(()=> {
+    let url = new URL(route("banktransactions.index"));
+    url.searchParams.append("page", pageNumber.value);
+    if(search.value){
+        url.searchParams.append("search",search.value);
+    }
+    return url;
+});
 
-// const updatedPageNumber = (link) => {
-//     pageNumber.value = link.url.split("=")[1];
-// }
+const updatedPageNumber = (link) => {
+    pageNumber.value = link.url.split("=")[1];
+}
 
-// watch(()=> excahngerateUrl.value,
-//     (updatedexcahngerateUrl) => {
-//         router.visit(updatedexcahngerateUrl,{
-//             preserveScroll: true,
-//             preserveState: true,
-//             replace:true,
-//         });
-//     }
-// );
+watch(()=> banktransaction.value,
+    (updatedbanktransaction) => {
+        router.visit(updatedbanktransaction,{
+            preserveScroll: true,
+            preserveState: true,
+            replace:true,
+        });
+    }
+);
 
-// watch(()=> search.value,
-//     (value) => {
-//        if(value){
-//         pageNumber.value = 1;
-//        }
-//     }
-// );
+watch(()=> search.value,
+    (value) => {
+       if(value){
+        pageNumber.value = 1;
+       }
+    }
+);
 </script>
 
 <template>
@@ -197,7 +190,7 @@ const deletebanktransactions = (bankId) => {
                                                 {{ bank.receiver_contact }}</td>
                                             <td
                                                 class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                {{ bank.created_by }}</td>
+                                                {{ bank.created_by.name }}</td>
                                             <td
                                                 class="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
                                                 <Link :href="route('banktransactions.edit', bank.id)"
@@ -214,7 +207,7 @@ const deletebanktransactions = (bankId) => {
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- <Pagination :data="exchangerates" :updatedPageNumber="updatedPageNumber" /> -->
+                            <Pagination :data="banks" :updatedPageNumber="updatedPageNumber" />
                         </div>
                     </div>
                 </div>

@@ -23,7 +23,7 @@ const form = useForm({
     receiver_bank_branch: banks.receiver_bank_branch,
     sender_contact: banks.sender_contact,
     receiver_contact: banks.receiver_contact,
-    created_by: banks.created_by
+    created_by: banks.created_by.id
 });
 
 

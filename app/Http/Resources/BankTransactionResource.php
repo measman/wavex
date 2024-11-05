@@ -29,7 +29,7 @@ class BankTransactionResource extends JsonResource
             'receiver_bank_branch' => $this->receiver_bank_branch,
             'sender_contact' => $this->sender_contact,
             'receiver_contact' => $this->receiver_contact,
-            'created_by' => $this->created_by,
+            'created_by' => UserResource::make($this->whenLoaded('banktransactionuser')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
