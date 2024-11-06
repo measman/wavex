@@ -1,21 +1,17 @@
 <script setup>
 import { usePage, useForm } from '@inertiajs/vue3';
 import AdminLayout from '../Components/AdminLayout.vue';
-
-// const currencies=usePage().props.currencies;
 defineProps({
     transactions: Object,
-    excahngerates: Object
+    excahngerates: Object,
+    currencies:Object,
 })
-
 const form = useForm({
-    exrate: "",
+    excurrency: "",
     amount_from: "",
     type: "",
     status: ""
 });
-
-
 const submitForm = () => {
     console.log(form);
     form.post(route('transactions.store'));
@@ -36,19 +32,17 @@ const submitForm = () => {
                             </p>
                         </div>
                         <div class="grid grid-cols-6 gap-6">
-
-
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="exrate" class="block text-sm font-medium text-gray-700">
-                                    Select Exchange:
+                                    Select Exchange Currency:
                                 </label>
-                                <select v-model="form.exrate" id="exrate"
+                                <select v-model="form.excurrency" id="exrate"
                                     class="{'mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm}"
                                     required>
                                     <option value="">Select</option>
-                                    <option v-for="item in excahngerates.data" :key="item.id"
-                                        :value="{ id: item.id, rate: item.rate, from_currency_id: item.from_currency.id, to_currency_id: item.to_currency.id }">
-                                        {{ item.from_currency.code }} To {{ item.to_currency.code }}</option>
+                                    <option v-for="item in currencies.data" :key="item.id"
+                                        :value="{ id: item.id}">
+                                        {{ item.code }}</option>
                                 </select>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
