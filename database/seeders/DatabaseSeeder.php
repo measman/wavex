@@ -120,6 +120,7 @@ class DatabaseSeeder extends Seeder
                             'to_amount' => $toAmount,
                             'exchange_rate_id' => $exchangeRate->id,
                             'status' => 'Completed',
+                            'type' => 'buy'
                         ]);
 
                         // Create fee for transaction

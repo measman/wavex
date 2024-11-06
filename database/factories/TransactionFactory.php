@@ -33,6 +33,7 @@ class TransactionFactory extends Factory
             'to_amount' => $fromAmount * $rate,
             'exchange_rate_id' => ExchangeRate::factory(),
             'status' => $this->faker->randomElement(['Pending', 'Completed', 'Failed']),
+            'type' => $this->faker->randomElement(['buy', 'sell']),
         ];
     }
 
