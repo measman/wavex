@@ -58,6 +58,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     // Route::get('/transactions/sell', [TransactionController::class, 'sell'])->name('transactions.sell');
 
     Route::resource('/transactions',TransactionController::class);
+    Route::post('/transactions/{transaction}/updatetransaction', [TransactionController::class, 'updatetransaction'])
+    ->name('transactions.updatetransaction');
+
 
     Route::resource('/settings', SettingsController::class);
 });
