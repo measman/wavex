@@ -58,6 +58,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@example.com',
             'password' => Hash::make('admin123'),
+            'isAdmin' => true,
         ]);
         foreach ($settings as $setting) {
             Settings::create($setting);
