@@ -16,9 +16,9 @@ let search = ref(usePage().props.search),
 let transactionsUrl = computed(() => {
     let url = new URL(route("transactions.index"));
     url.searchParams.append("page", pageNumber.value);
-    // if(search.value){
-    //     url.searchParams.append("search",search.value);
-    // }
+    if(search.value){
+        url.searchParams.append("search",search.value);
+    }
     return url;
 });
 
@@ -63,27 +63,21 @@ const deletetransaction = (transactionId) => {
                             Add Transactions
                         </Link>
                     </div>
-                    <!-- <div class="mt-4 sm:mt-0 sm:ml-4 sm:flex-none">
-                        <Link
-                            :href="route('transactions.buy')"
-                            class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-                        >
-                            Buy
-                        </Link>
-                    </div> -->
-
-                    <!-- <div class="mt-4 sm:mt-0 sm:ml-4 sm:flex-none">
-                        <Link
-                            :href="route('transactions.sell')"
-                            class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-                        >
-                            Sell
-                        </Link>
-                    </div> -->
                 </div>
 
                 <div class="mt-8 flex flex-col">
                     <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="relative text-sm text-gray-800 col-span-3">
+                            <div
+                                class="absolute pl-2 left-0 top-0 bottom-0 flex items-center pointer-events-none text-gray-500">
+                                <MagnifyingGlass />
+                            </div>
+
+                            <input v-model="search" type="text" autocomplete="off" placeholder="Search  data..."
+                                id="search"
+                                class="block rounded-lg border-0 mx-8 py-2 pl-10 text-gray-900 ring-1 ring-inset ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+
+                        </div>
                         <div
                             class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8"
                         >
@@ -209,7 +203,7 @@ const deletetransaction = (transactionId) => {
                                                 >
                                                 <Link
                                                     @click="
-                                                        deletecurrency(
+                                                        deletetransaction(
                                                             transaction.id
                                                         )
                                                     "
@@ -223,10 +217,10 @@ const deletetransaction = (transactionId) => {
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- <Pagination
+                            <Pagination
                                 :data="transactions"
                                 :updatedPageNumber="updatedPageNumber"
-                            /> -->
+                            />
                         </div>
                     </div>
                 </div>
