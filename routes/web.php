@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\BankTransactionController;
 use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\DailyStatusController;
 use App\Http\Controllers\ExchangeRateController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\WalletController;
@@ -48,18 +49,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::resource('/exchangerate', ExchangeRateController::class);
     Route::resource('/wallets', WalletController::class);
     Route::resource('/banktransactions', BankTransactionController::class);
-
-
-
     Route::resource('/user', UserController::class);
-    // Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
-    // Route::get('/transactions/{id}/edit', [TransactionController::class, 'edit'])->name('transactions.edit');
-    // Route::get('/transactions/buy', [TransactionController::class, 'buy'])->name('transactions.buy');
-    // Route::get('/transactions/sell', [TransactionController::class, 'sell'])->name('transactions.sell');
-
     Route::resource('/transactions',TransactionController::class);
     Route::post('/transactions/{transaction}/updatetransaction', [TransactionController::class, 'updatetransaction'])
     ->name('transactions.updatetransaction');
+    Route::resource('/dailystatus', DailyStatusController::class);
+    Route::post('/dailystatus/{id}', [DailyStatusController::class, 'insertstatus'])->name('dailystatus.insertstatus');
 
 
     Route::resource('/settings', SettingsController::class);
