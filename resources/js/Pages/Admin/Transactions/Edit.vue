@@ -10,6 +10,7 @@ defineProps({
 
 let transaction = usePage().props.transaction.data;
 
+
 const form = useForm({
     excurrency: transaction.from_wallet.currency_id,
     amount_from: transaction.from_amount,

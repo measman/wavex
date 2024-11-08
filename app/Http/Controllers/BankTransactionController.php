@@ -15,14 +15,7 @@ class BankTransactionController extends Controller
 {
     public function index(Request $request)
     {
-        // Fetch all transactions along with the related users
-        //$transactions = BankTransaction::with(['banktransactionuser'])->get();
-
         
-        // Dump the transactions to see what it returns
-        //dd($transactions); // This will stop further execution
-        
-        // The following code won't run if you dd() here
         $banks = BankTransactionResource::collection(
             BankTransaction::with(['banktransactionuser'])
                 ->search($request)
