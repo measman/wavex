@@ -66,19 +66,19 @@ class TransactionController extends Controller
                 ->where('to_currency_id', $to_curency_id)
                 ->pluck('id')
                 ->first();
-            $from_wallet_id = Wallet::where('currency_id', $from_curency_id)
-                ->where('user_id', $user_id)
-                ->pluck('id')
-                ->first();
-            $to_wallet_id = Wallet::where('currency_id', $to_curency_id)
-                ->where('user_id', $user_id)
-                ->pluck('id')
-                ->first();
-    
+            // $from_wallet_id = Wallet::where('currency_id', $from_curency_id)
+            //     ->where('user_id', $user_id)
+            //     ->pluck('id')
+            //     ->first();
+            // $to_wallet_id = Wallet::where('currency_id', $to_curency_id)
+            //     ->where('user_id', $user_id)
+            //     ->pluck('id')
+            //     ->first();
+            //dd($from_wallet_id);
             Transaction::create([
                 'user_id' => $user_id,
-                'from_wallet_id' => $from_wallet_id,
-                'to_wallet_id' => $to_wallet_id,
+                'from_wallet_id' => $from_curency_id,
+                'to_wallet_id' => $to_curency_id,
                 'from_amount' => $amount_from,
                 'to_amount' => $amount_to,
                 'exchange_rate_id' => $exchange_rate_id,
@@ -97,19 +97,19 @@ class TransactionController extends Controller
                 ->where('to_currency_id', $to_curency_id)
                 ->pluck('id')
                 ->first();
-                $from_wallet_id = Wallet::where('currency_id', $from_curency_id)
-                ->where('user_id', $user_id)
-                ->pluck('id')
-                ->first();
-            $to_wallet_id = Wallet::where('currency_id', $to_curency_id)
-                ->where('user_id', $user_id)
-                ->pluck('id')
-                ->first();
+            //     $from_wallet_id = Wallet::where('currency_id', $from_curency_id)
+            //     ->where('user_id', $user_id)
+            //     ->pluck('id')
+            //     ->first();
+            // $to_wallet_id = Wallet::where('currency_id', $to_curency_id)
+            //     ->where('user_id', $user_id)
+            //     ->pluck('id')
+            //     ->first();
     
             Transaction::create([
                 'user_id' => $user_id,
-                'from_wallet_id' => $from_wallet_id,
-                'to_wallet_id' => $to_wallet_id,
+                'from_wallet_id' => $from_curency_id,
+                'to_wallet_id' => $to_curency_id,
                 'from_amount' => $amount_to,
                 'to_amount' => $amount_from ,
                 'exchange_rate_id' => $exchange_rate_id,
@@ -117,26 +117,6 @@ class TransactionController extends Controller
                 'type' => $type,
             ]);
         }
-
-        
-        // $from_wallet_balance = Wallet::where('id', $from_wallet_id)
-        //     ->where('user_id', $user_id)
-        //     ->pluck('balance')
-        //     ->first();
-        // $to_wallet_balance = Wallet::where('id', $to_wallet_id)
-        //     ->where('user_id', $user_id)
-        //     ->pluck('balance')
-        //     ->first();
-        // $new_from_wallet_balance = $from_wallet_balance + $amount_from;
-        // $new_to_wallet_balance = $to_wallet_balance - $amount_to;
-
-        // Wallet::where('id', $from_wallet_id)
-        //     ->where('user_id', $user_id)
-        //     ->update(['balance' => $new_from_wallet_balance]);
-
-        // Wallet::where('id', $to_wallet_id)
-        //     ->where('user_id', $user_id)
-        //     ->update(['balance' => $new_to_wallet_balance]);
         return redirect()->route('transactions.index');
     }
     public function edit(Transaction $transaction)

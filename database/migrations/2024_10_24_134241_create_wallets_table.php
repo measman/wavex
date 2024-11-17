@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained();
             $table->foreignId('currency_id')->constrained();
             $table->decimal('balance', 15, 2)->default(0);
-            $table->unique(['user_id', 'currency_id']);
+            //$table->unique(['user_id', 'currency_id']);
             $table->timestamps();
         });
     }

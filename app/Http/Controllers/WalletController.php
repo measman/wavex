@@ -8,9 +8,11 @@ use App\Http\Resources\CurrencyResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\WalletResource;
 use App\Models\Currency;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class WalletController extends Controller
@@ -18,15 +20,14 @@ class WalletController extends Controller
 
     public function index(Request $request)
     {
-        $wallets = WalletResource::collection(
-            Wallet::with(['user', 'currency'])
-                ->search($request) 
-                ->paginate(10)
-        );
+        $transactions = Wallet::leftJoin('users', 'users.id', '=', 'wallets.user_id')
+            ->leftJoin('currencies', 'currencies.id', '=', 'wallets.currency_id')
+            ->select('wallets.user_id', 'users.name', 'currencies.code', DB::raw('SUM(wallets.balance) as total_balance'))
+            ->groupBy('wallets.user_id', 'users.name', 'currencies.code')
+            ->get();
 
         return Inertia::render('Admin/Wallet/index', [
-            'wallets' => $wallets,
-            'search' => $request->search ?? '',
+            'wallets' => $transactions,
         ]);
     }
 
