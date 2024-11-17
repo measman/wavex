@@ -8,49 +8,49 @@ defineProps({
         required:true
     }
 });
-const deleteForm=useForm({});
-const deletewal = (walId) =>{
-    if (confirm('Are you sure you want to delete?')) {
-        deleteForm.delete(route('wallets.destroy',walId));
-    }
-}
+//const deleteForm=useForm({});
+//const deletewal = (walId) =>{
+ //   if (confirm('Are you sure you want to delete?')) {
+ //       deleteForm.delete(route('wallets.destroy',walId));
+ //  }
+//}
 
 
 
 
-let search = ref(usePage().props.search),
- pageNumber =ref(1);
+// let search = ref(usePage().props.search),
+//  pageNumber =ref(1);
 
-let walletUrl = computed(()=> {
-    let url = new URL(route("wallets.index"));
-    url.searchParams.append("page", pageNumber.value);
-    if(search.value){
-        url.searchParams.append("search",search.value);
-    }
-    return url;
-});
+// let walletUrl = computed(()=> {
+//     let url = new URL(route("wallets.index"));
+//     url.searchParams.append("page", pageNumber.value);
+//     if(search.value){
+//         url.searchParams.append("search",search.value);
+//     }
+//     return url;
+// });
 
-const updatedPageNumber = (link) => {
-    pageNumber.value = link.url.split("=")[1];
-}
+// const updatedPageNumber = (link) => {
+//     pageNumber.value = link.url.split("=")[1];
+// }
 
-watch(()=> walletUrl.value,
-    (updatedwalletUrl) => {
-        router.visit(updatedwalletUrl,{
-            preserveScroll: true,
-            preserveState: true,
-            replace:true,
-        });
-    }
-);
+// watch(()=> walletUrl.value,
+//     (updatedwalletUrl) => {
+//         router.visit(updatedwalletUrl,{
+//             preserveScroll: true,
+//             preserveState: true,
+//             replace:true,
+//         });
+//     }
+// );
 
-watch(()=> search.value,
-    (value) => {
-       if(value){
-        pageNumber.value = 1;
-       }
-    }
-);
+// watch(()=> search.value,
+//     (value) => {
+//        if(value){
+//         pageNumber.value = 1;
+//        }
+//     }
+// );
 </script>
 
 <template>
@@ -64,14 +64,6 @@ watch(()=> search.value,
                         </h1>
 
                     </div>
-
-                    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                        <Link :href="route('wallets.create')"
-                            class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">
-                        Add Balance
-                        </Link>
-
-                    </div>
                 </div>
 
                 <div class="mt-8 flex flex-col">
@@ -82,14 +74,14 @@ watch(()=> search.value,
                             >
                             </div>
 
-                            <input
+                            <!-- <input
                                 v-model="search"
                                 type="text"
                                 autocomplete="off"
                                 placeholder="Search  data..."
                                 id="search"
                                 class="block rounded-lg border-0 mx-8 py-2 pl-10 text-gray-900 ring-1 ring-inset ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            />
+                            /> -->
                             
                         </div>
 
@@ -110,24 +102,21 @@ watch(()=> search.value,
                                             <th scope="col"
                                                 class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Balance
                                             </th>
-                                            <th scope="col"
-                                                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Action
-                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-200 bg-white">
-                                        <tr v-for="wal in wallets.data" :key="wal.id">
+                                        <tr v-for="wal in wallets" :key="wal.user_id">
                                             <td
                                                 class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                {{ wal.id }}</td>
+                                                {{ wal.user_id }}</td>
                                             <td
                                                 class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                {{ wal.user.name }}</td>
+                                                {{ wal.name }}</td>
                                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{
-                                                wal.currency.code }}</td>
-                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ wal.balance
+                                                wal.code }}</td>
+                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ wal.total_balance
                                                 }}</td>
-                                            <td
+                                            <!-- <td
                                                 class="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
                                                 <Link :href="route('wallets.edit',wal.id)"
                                                     class="text-indigo-600 hover:text-indigo-900">Edit</Link>
@@ -137,14 +126,13 @@ watch(()=> search.value,
                                                         Delete
                                                     </Link>
 
-                                            </td>
+                                            </td> -->
                                         </tr>
-                                        <!-- Handle empty state if no data is present -->
 
-                                    </tbody>
+                                 </tbody>
                                 </table>
                             </div>
-                            <Pagination :data="wallets" :updatedPageNumber="updatedPageNumber" />
+                            <!-- <Pagination :data="wallets" :updatedPageNumber="updatedPageNumber" /> -->
                         </div>
                     </div>
                 </div>

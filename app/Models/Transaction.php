@@ -23,22 +23,22 @@ class Transaction extends Model
         'type',
     ];
 
-    protected $with = ['user', 'fromWallet', 'toWallet', 'exchangeRate', 'fees'];
+    protected $with = ['user', 'exchangeRate', 'fees'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function fromWallet()
-    {
-        return $this->belongsTo(Wallet::class, 'from_wallet_id');
-    }
+    // public function fromWallet()
+    // {
+    //     return $this->belongsTo(Wallet::class, 'from_wallet_id');
+    // }
 
-    public function toWallet()
-    {
-        return $this->belongsTo(Wallet::class, 'to_wallet_id');
-    }
+    // public function toWallet()
+    // {
+    //     return $this->belongsTo(Wallet::class, 'to_wallet_id');
+    // }
 
     public function exchangeRate()
     {

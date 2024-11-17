@@ -22,9 +22,9 @@ class DailyStatusController extends Controller
     {
         $dailystatus = DailyStatus::findOrFail($id);
         $log_date = $dailystatus->date;
-        // $dailystatus->update([
-        //     'status' => 'day_end',
-        // ]);
+        $dailystatus->update([
+            'status' => 'day_end',
+        ]);
         $userWalletBalances = [];
         $transactionlogs = Transaction::whereDate('created_at', $log_date)
             ->where('status', 'Completed')
@@ -42,11 +42,10 @@ class DailyStatusController extends Controller
             }
             $userWalletBalances[$transaction->user_id][$transaction->to_wallet_id] -= $transaction->to_amount;
         }
-        dd($userWalletBalances);
         foreach ($userWalletBalances as $userId => $wallets) {
             $id = $userId;
             foreach ($wallets as $walletId => $balance) {
-                dd($balance,$walletId);
+                //dd($balance,$walletId);
                 Wallet::create([
                     'user_id' => $id,
                     'currency_id' => $walletId,
