@@ -10,6 +10,7 @@ onMounted(() => {
 });
 defineProps({
     daily_status:Object,
+    todayexchangerate:Object,
 })
 //let daily_status=usePage().props.daily_status.data;
 </script>

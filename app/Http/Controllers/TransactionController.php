@@ -125,6 +125,7 @@ class TransactionController extends Controller
 
         $transactions = TransactionResource::collection(Transaction::all());
         $currencies=CurrencyResource::collection(Currency::all());
+        //dd($transaction);
         return Inertia::render('Admin/Transactions/Edit', [
             'transaction' => TransactionResource::make($transaction),
             'transactions' => $transactions,
