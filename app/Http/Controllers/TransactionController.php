@@ -18,6 +18,14 @@ use function Laravel\Prompts\alert;
 
 class TransactionController extends Controller
 {
+    protected ExchangeRate $excahngerate;
+
+    public function __construct(ExchangeRate $excahngerate)
+    {
+        $this->excahngerate = $excahngerate;
+    }
+
+
     public function index(Request $request)
     {
         $user_id = Auth::user()->id;
@@ -57,24 +65,10 @@ class TransactionController extends Controller
             $from_curency_id = $currency_id;
             $to_curency_id = $basecurrency_id;
 
-            $exchangerate = ExchangeRate::where('from_currency_id', $from_curency_id)
-                ->where('to_currency_id', $to_curency_id)
-                ->pluck('rate')
-                ->first();
+            $exchangerate = $this->excahngerate->getFirstValueOf($from_curency_id, $to_curency_id)['rate'];
             $amount_to = $amount_from * $exchangerate;
-            $exchange_rate_id = ExchangeRate::where('from_currency_id', $from_curency_id)
-                ->where('to_currency_id', $to_curency_id)
-                ->pluck('id')
-                ->first();
-            // $from_wallet_id = Wallet::where('currency_id', $from_curency_id)
-            //     ->where('user_id', $user_id)
-            //     ->pluck('id')
-            //     ->first();
-            // $to_wallet_id = Wallet::where('currency_id', $to_curency_id)
-            //     ->where('user_id', $user_id)
-            //     ->pluck('id')
-            //     ->first();
-            //dd($from_wallet_id);
+            $exchange_rate_id = $this->excahngerate->getFirstValueOf($from_curency_id, $to_curency_id)['id'];
+           
             Transaction::create([
                 'user_id' => $user_id,
                 'from_wallet_id' => $from_curency_id,
@@ -88,24 +82,11 @@ class TransactionController extends Controller
         } else {
             $from_curency_id = $basecurrency_id;
             $to_curency_id = $currency_id;
-            $exchangerate = ExchangeRate::where('from_currency_id', $from_curency_id)
-                ->where('to_currency_id', $to_curency_id)
-                ->pluck('rate')
-                ->first();
+            $exchangerate = $this->excahngerate->getFirstValueOf($from_curency_id, $to_curency_id)['rate'];
+              
             $amount_to = $amount_from * $exchangerate;
-            $exchange_rate_id = ExchangeRate::where('from_currency_id', $from_curency_id)
-                ->where('to_currency_id', $to_curency_id)
-                ->pluck('id')
-                ->first();
-            //     $from_wallet_id = Wallet::where('currency_id', $from_curency_id)
-            //     ->where('user_id', $user_id)
-            //     ->pluck('id')
-            //     ->first();
-            // $to_wallet_id = Wallet::where('currency_id', $to_curency_id)
-            //     ->where('user_id', $user_id)
-            //     ->pluck('id')
-            //     ->first();
-    
+            $exchange_rate_id = $this->excahngerate->getFirstValueOf($from_curency_id, $to_curency_id)['id'];
+            
             Transaction::create([
                 'user_id' => $user_id,
                 'from_wallet_id' => $from_curency_id,
