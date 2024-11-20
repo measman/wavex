@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class ExchangeRate extends Model
 {
@@ -100,5 +102,17 @@ class ExchangeRate extends Model
                 'exchangerate' => $exchange_rate,
                 'unit' => $unit
             ]);
+    }
+    public function getliveexchangerate(){
+        $todayDate = Carbon::today()->toDateString();
+        $response = Http::get("https://www.nrb.org.np/api/forex/v1/rates", [
+            'page' => 1,
+            'per_page' => 10,
+            'from' => $todayDate,
+            'to' => $todayDate,
+        ]);
+        $responseData = $response->json();
+        $todaysexchangerate = $responseData['data']['payload'][0]['rates'];
+        return $todaysexchangerate;
     }
 }

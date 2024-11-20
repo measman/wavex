@@ -13,6 +13,8 @@ use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 use function Laravel\Prompts\alert;
 
@@ -28,6 +30,7 @@ class TransactionController extends Controller
 
     public function index(Request $request)
     {
+        
         $user_id = Auth::user()->id;
         $transactionQuery = Transaction::where('user_id', $user_id)
             ->search($request->input('search'));
@@ -42,14 +45,14 @@ class TransactionController extends Controller
 
 
     public function create()
-    {
+    {   $todaysexchangerate = $this->excahngerate->getliveexchangerate();
         $user_id = Auth::user()->id;
         $transactions = TransactionResource::collection(
             Transaction::where('user_id', $user_id)->get()
         );
         $currencies = CurrencyResource::collection((Currency::all()));
         $excahngerates = ExchangeRateResource::collection(ExchangeRate::all());
-        return Inertia::render('Admin/Transactions/Create', ['transactions' => $transactions, 'excahngerates' => $excahngerates, 'currencies' => $currencies]); // Correct spelling
+        return Inertia::render('Admin/Transactions/Create', ['transactions' => $transactions, 'excahngerates' => $excahngerates, 'currencies' => $currencies,'todaysexchangerate'=>$todaysexchangerate]); // Correct spelling
     }
 
     public function store(Request $request)
