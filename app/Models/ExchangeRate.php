@@ -40,4 +40,11 @@ class ExchangeRate extends Model
             });
         });
     }
+
+    public function getFirstValueOf( int $from_curency_id, int $to_curency_id ){
+        return $this->where('from_currency_id', $from_curency_id)
+                ->where('to_currency_id', $to_curency_id)
+                ->select('rate', 'id')
+                ->first();
+    }
 }
