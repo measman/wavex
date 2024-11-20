@@ -21,6 +21,8 @@ class Transaction extends Model
         'exchange_rate_id',
         'status',
         'type',
+        'exchangerate',
+        'unit'
     ];
 
     protected $with = ['user', 'exchangeRate', 'fees'];
@@ -51,15 +53,16 @@ class Transaction extends Model
     }
 
     public function scopeSearch(Builder $query, $search = null)
-{
-    return $query->when($search, function ($query) use ($search) {
-        // Search by `currency` code in the `fromWallet` relation
-        $query->whereHas('fromWallet', function ($query) use ($search) {
-            $query->whereHas('currency', function ($query) use ($search) {
-                $query->where('code', 'like', '%' . $search . '%');
+    {
+        return $query->when($search, function ($query) use ($search) {
+            // Search by `currency` code in the `fromWallet` relation
+            $query->whereHas('fromWallet', function ($query) use ($search) {
+                $query->whereHas('currency', function ($query) use ($search) {
+                    $query->where('code', 'like', '%' . $search . '%');
+                });
             });
         });
-    });
-}
+    }
 
+    
 }

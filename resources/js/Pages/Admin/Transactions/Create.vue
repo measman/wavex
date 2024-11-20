@@ -10,7 +10,9 @@ const form = useForm({
     excurrency: "",
     amount_from: "",
     type: "",
-    status: ""
+    status: "",
+    exchange_rate:"",
+    unit:""
 });
 const submitForm = () => {
     console.log(form);
@@ -76,7 +78,18 @@ const submitForm = () => {
                                     <option value="Failed">Failed</option> <!-- Added 'failed' option -->
                                 </select>
                             </div>
-
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="exchange_rate" class="block text-sm font-medium text-gray-700">Exchange Rate</label>
+                                <input v-model="form.exchange_rate" type="text" id="exchange_rate"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                    required />
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="unit" class="block text-sm font-medium text-gray-700">Unit</label>
+                                <input v-model="form.unit" type="text" id="unit"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                    required />
+                            </div>
 
                         </div>
                         <div class="flex justify-end mt-4">
