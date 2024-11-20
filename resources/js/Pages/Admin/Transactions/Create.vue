@@ -1,24 +1,61 @@
 <script setup>
 import { usePage, useForm } from '@inertiajs/vue3';
 import AdminLayout from '../Components/AdminLayout.vue';
-defineProps({
+import { ref, watch } from 'vue';
+
+// Define props
+const props = defineProps({
     transactions: Object,
     excahngerates: Object,
-    currencies:Object,
-})
+    currencies: Object,
+    todaysexchangerate: Array
+});
+
+// Form state
 const form = useForm({
     excurrency: "",
     amount_from: "",
     type: "",
     status: "",
-    exchange_rate:"",
-    unit:""
+    exchange_rate: "",
+    unit: ""
 });
+
+
+// Watcher for form.excurrency
+watch(
+    () => form.type,
+    (newValue) => {
+        getliverates(newValue);
+    }
+);
+
+// Function to get live rates
+const getliverates = (type) => {
+    props.todaysexchangerate.forEach(rate => {
+        if (type == 'buy') {
+            if (rate.currency.iso3 == form.excurrency['code']) {
+            form.exchange_rate=rate.buy;
+            form.unit=rate.currency.unit;
+        }
+        } else {
+            if (rate.currency.iso3 == form.excurrency['code']) {
+            form.exchange_rate=rate.sell;
+            form.unit=rate.currency.unit;
+        }
+        }
+        
+    });
+    
+};
+
+// Function to submit the form
 const submitForm = () => {
     console.log(form);
     form.post(route('transactions.store'));
-}
+};
 </script>
+
 <template>
     <AdminLayout>
         <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -43,7 +80,7 @@ const submitForm = () => {
                                     required>
                                     <option value="">Select</option>
                                     <option v-for="item in currencies.data" :key="item.id"
-                                        :value="{ id: item.id}">
+                                        :value="{ id: item.id, code: item.code }">
                                         {{ item.code }}</option>
                                 </select>
                             </div>
@@ -79,7 +116,8 @@ const submitForm = () => {
                                 </select>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
-                                <label for="exchange_rate" class="block text-sm font-medium text-gray-700">Exchange Rate</label>
+                                <label for="exchange_rate" class="block text-sm font-medium text-gray-700">Exchange
+                                    Rate</label>
                                 <input v-model="form.exchange_rate" type="text" id="exchange_rate"
                                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                     required />
