@@ -30,7 +30,7 @@ class TransactionController extends Controller
     {
         $user_id = Auth::user()->id;
         $transactionQuery = Transaction::where('user_id', $user_id)
-                                       ->search($request->input('search'));
+            ->search($request->input('search'));
         $transactions = TransactionResource::collection(
             $transactionQuery->paginate(10)
         );
@@ -39,7 +39,7 @@ class TransactionController extends Controller
             'search' => $request->input('search') ?? '',
         ]);
     }
-    
+
 
     public function create()
     {
@@ -61,42 +61,21 @@ class TransactionController extends Controller
         $basecurrency = Settings::first();
         $basecurrency_id = $basecurrency->currency_id;
         $status = $request->status;
+        $exchange_rate = $request->exchange_rate;
+        $unit = $request->unit;
         if ($type == 'buy') {
             $from_curency_id = $currency_id;
             $to_curency_id = $basecurrency_id;
-
-            $exchangerate = $this->excahngerate->getFirstValueOf($from_curency_id, $to_curency_id)['rate'];
-            $amount_to = $amount_from * $exchangerate;
+            $amount_to = $amount_from * $exchange_rate;
             $exchange_rate_id = $this->excahngerate->getFirstValueOf($from_curency_id, $to_curency_id)['id'];
-           
-            Transaction::create([
-                'user_id' => $user_id,
-                'from_wallet_id' => $from_curency_id,
-                'to_wallet_id' => $to_curency_id,
-                'from_amount' => $amount_from,
-                'to_amount' => $amount_to,
-                'exchange_rate_id' => $exchange_rate_id,
-                'status' => $status,
-                'type' => $type,
-            ]);
+            $this->excahngerate->storebuytransaction($user_id, $from_curency_id, $to_curency_id, $amount_from, $amount_to, $exchange_rate_id, $status, $type, $exchange_rate, $unit);
         } else {
             $from_curency_id = $basecurrency_id;
             $to_curency_id = $currency_id;
-            $exchangerate = $this->excahngerate->getFirstValueOf($from_curency_id, $to_curency_id)['rate'];
-              
-            $amount_to = $amount_from * $exchangerate;
+            $amount_to = $amount_from * $exchange_rate;
             $exchange_rate_id = $this->excahngerate->getFirstValueOf($from_curency_id, $to_curency_id)['id'];
+            $this->excahngerate->storeselltransaction($user_id, $from_curency_id, $to_curency_id, $amount_from, $amount_to, $exchange_rate_id, $status, $type, $exchange_rate, $unit);
             
-            Transaction::create([
-                'user_id' => $user_id,
-                'from_wallet_id' => $from_curency_id,
-                'to_wallet_id' => $to_curency_id,
-                'from_amount' => $amount_to,
-                'to_amount' => $amount_from ,
-                'exchange_rate_id' => $exchange_rate_id,
-                'status' => $status,
-                'type' => $type,
-            ]);
         }
         return redirect()->route('transactions.index');
     }
@@ -105,19 +84,20 @@ class TransactionController extends Controller
         //dd($transaction); // This will show the transaction object
 
         $transactions = TransactionResource::collection(Transaction::all());
-        $currencies=CurrencyResource::collection(Currency::all());
+        $currencies = CurrencyResource::collection(Currency::all());
         //dd($transaction);
         return Inertia::render('Admin/Transactions/Edit', [
             'transaction' => TransactionResource::make($transaction),
             'transactions' => $transactions,
-            'currencies' =>$currencies
+            'currencies' => $currencies
         ]);
     }
 
-    public function updatetransaction(Request $request){
-        
+    public function updatetransaction(Request $request)
+    {
+
         $user_id = Auth::user()->id;
-        $transaction_id=$request->transaction;
+        $transaction_id = $request->transaction;
         $currency_id = $request->excurrency;
         $type = $request->type;
         $amount_from = $request->amount_from;
@@ -160,7 +140,7 @@ class TransactionController extends Controller
             ->where('user_id', $user_id)
             ->pluck('id')
             ->first();
-        
+
         $transaction = Transaction::findOrFail($transaction_id);
 
         // Update the transaction with the provided values

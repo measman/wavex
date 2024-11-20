@@ -41,10 +41,64 @@ class ExchangeRate extends Model
         });
     }
 
-    public function getFirstValueOf( int $from_curency_id, int $to_curency_id ){
+    public function getFirstValueOf(int $from_curency_id, int $to_curency_id)
+    {
         return $this->where('from_currency_id', $from_curency_id)
-                ->where('to_currency_id', $to_curency_id)
-                ->select('rate', 'id')
-                ->first();
+            ->where('to_currency_id', $to_curency_id)
+            ->select('rate', 'id')
+            ->first();
+    }
+
+    public function storebuytransaction(
+        int $user_id,
+        int $from_curency_id,
+        int $to_curency_id,
+        float $amount_from,
+        float $amount_to,
+        int $exchange_rate_id,
+        string $status,
+        string $type,
+        float $exchange_rate,
+        int $unit
+    ) {
+        Transaction::create([
+            'user_id' => $user_id,
+            'from_wallet_id' => $from_curency_id,
+            'to_wallet_id' => $to_curency_id,
+            'from_amount' => $amount_from,
+            'to_amount' => $amount_to,
+            'exchange_rate_id' => $exchange_rate_id,
+            'status' => $status,
+            'type' => $type,
+            'exchangerate' => $exchange_rate,
+            'unit' => $unit
+
+        ]);
+    }
+
+    public function storeselltransaction(
+        int $user_id,
+        int $from_curency_id,
+        int $to_curency_id,
+        float $amount_from,
+        float $amount_to,
+        int $exchange_rate_id,
+        string $status,
+        string $type,
+        float $exchange_rate,
+        int $unit
+    ) {
+        Transaction::create([
+                'user_id' => $user_id,
+                'from_wallet_id' => $from_curency_id,
+                'to_wallet_id' => $to_curency_id,
+                'from_amount' => $amount_to,
+                'to_amount' => $amount_from,
+                'exchange_rate_id' => $exchange_rate_id,
+                'status' => $status,
+                'type' => $type,
+                'exchangerate' => $exchange_rate,
+                'unit' => $unit
+            ]);
     }
 }
