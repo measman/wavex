@@ -7,6 +7,7 @@ use App\Http\Controllers\BankTransactionController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\DailyStatusController;
 use App\Http\Controllers\ExchangeRateController;
+use App\Http\Controllers\FeeController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\UserController;
@@ -55,6 +56,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     ->name('transactions.updatetransaction');
     Route::resource('/dailystatus', DailyStatusController::class);
     Route::post('/dailystatus/{id}', [DailyStatusController::class, 'insertstatus'])->name('dailystatus.insertstatus');
+    Route::resource('/fees',FeeController::class);
 
 
     Route::resource('/settings', SettingsController::class);
