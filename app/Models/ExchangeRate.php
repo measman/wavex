@@ -58,7 +58,6 @@ class ExchangeRate extends Model
         float $amount_from,
         float $amount_to,
         int $exchange_rate_id,
-        string $status,
         string $type,
         float $exchange_rate,
         int $unit
@@ -70,7 +69,7 @@ class ExchangeRate extends Model
             'from_amount' => $amount_from,
             'to_amount' => $amount_to,
             'exchange_rate_id' => $exchange_rate_id,
-            'status' => $status,
+            'status' => 'Completed',
             'type' => $type,
             'exchangerate' => $exchange_rate,
             'unit' => $unit
@@ -85,7 +84,6 @@ class ExchangeRate extends Model
         float $amount_from,
         float $amount_to,
         int $exchange_rate_id,
-        string $status,
         string $type,
         float $exchange_rate,
         int $unit
@@ -97,7 +95,7 @@ class ExchangeRate extends Model
                 'from_amount' => $amount_to,
                 'to_amount' => $amount_from,
                 'exchange_rate_id' => $exchange_rate_id,
-                'status' => $status,
+                'status' => 'Completed',
                 'type' => $type,
                 'exchangerate' => $exchange_rate,
                 'unit' => $unit

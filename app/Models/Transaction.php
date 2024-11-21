@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -64,5 +65,14 @@ class Transaction extends Model
         });
     }
 
+    public function getextrainfo() {
+        $response = [];
+        $response['id'] = $this->select('id')
+                               ->orderBy('id', 'desc')
+                               ->first()?->id;
+        $response['date'] = Carbon::today()->toDateString();
+        return $response;
+    }
+    
     
 }
