@@ -44,7 +44,7 @@ const submitForm = () => {
                                 <label for="exrate" class="block text-sm font-medium text-gray-700">
                                     Select Exchange Currency:
                                 </label>
-                                <select v-model="form.excurrency" id="exrate"
+                                <select v-model="form.excurrency" id="exrate" disabled
                                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                     required>
                                     <option value="">Select</option>
@@ -55,7 +55,7 @@ const submitForm = () => {
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="amount_from" class="block text-sm font-medium text-gray-700">Amount</label>
-                                <input v-model="form.amount_from" type="text" id="amount_from"
+                                <input v-model="form.amount_from" type="text" id="amount_from" disabled
                                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                     required />
                             </div>
@@ -63,7 +63,7 @@ const submitForm = () => {
                                 <label for="type" class="block text-sm font-medium text-gray-700">
                                     Select Exchange:
                                 </label>
-                                <select v-model="form.type" id="type"
+                                <select v-model="form.type" id="type" disabled
                                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                     required>
                                     <option value="">Select</option>
