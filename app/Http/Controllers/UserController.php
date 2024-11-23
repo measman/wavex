@@ -13,8 +13,7 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $user = UserResource::collection(User::all());
-        return Inertia::render('Admin/User/index', ['user' => $user]);
+        return Inertia::render('Admin/User/index');
     }
 
     public function create()
@@ -32,19 +31,5 @@ class UserController extends Controller
 
         User::create($data);
         return redirect()->route('user.index');
-    }
-
-    public function destroy(user $user)
-    {
-        $user->delete();
-        return redirect()->route('user.index');
-    }
-
-    public function edit(user $user)
-    {
-        $user = UserResource::collection(User::all());
-        return Inertia::render('Admin/User/Edit', [
-            'user' => UserResource::make($user),
-        ]);
     }
 }
