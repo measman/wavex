@@ -26,6 +26,7 @@ onMounted(() => {
       { data: 'action_buttons' }
     ],
     destroy: true,
+    
   });
 });
 
@@ -114,10 +115,15 @@ const edituser = () => {
   });
 }
 </script>
-
+<style>
+div.dt-container select.dt-input {
+    padding: 4px;
+    width: 60px;
+}
+</style>
 <template>
   <div class="bg-gray-100 py-10">
-    <div class="mx-auto max-w-7xl">
+    <div class="mx-auto max-w-8xl">
       <div class="px-4 sm:px-6 lg:px-8">
         <div class="sm:flex sm:items-center">
           <div class="sm:flex-auto">
