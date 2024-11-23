@@ -20,8 +20,11 @@
     },
     "dependencies": {
         "apexcharts": "^4.0.0",
+        "cors": "^2.8.5",
         "datatables.net-dt": "^2.1.8",
         "flowbite": "^2.5.2",
-        "jquery": "^3.7.1"
+        "i": "^0.3.7",
+        "jquery": "^3.7.1",
+        "sweetalert2": "^11.14.5"
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\FeeApiController;
+use App\Http\Controllers\Api\UserApiController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -9,3 +11,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('feetest',FeeApiController::class);
+Route::get('userinfo', [UserApiController::class, 'userinfo']);
+Route::post('userdelete', [UserApiController::class, 'userdelete']);
+Route::post('useredit', [UserApiController::class, 'useredit']);
+Route::post('userupdate', [UserApiController::class, 'userupdate']);
