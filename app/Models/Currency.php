@@ -18,4 +18,6 @@ class Currency extends Model
     {
         return $this->hasMany(Wallet::class);
     }
+
+    
 }

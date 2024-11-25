@@ -13,11 +13,10 @@ return new class extends Migration {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('from_wallet_id')->constrained('wallets');
-            $table->foreignId('to_wallet_id')->constrained('wallets');
+            $table->foreignId('from_currency_id')->constrained('currencies');
+            $table->foreignId('to_currency_id')->constrained('currencies');
             $table->decimal('from_amount', 15, 2);
             $table->decimal('to_amount', 15, 2);
-            $table->foreignId('exchange_rate_id')->constrained();
             $table->enum('status', ['Pending', 'Completed', 'Failed'])->default('Pending');
             $table->string('type');
             $table->decimal('exchangerate', 15, 2);

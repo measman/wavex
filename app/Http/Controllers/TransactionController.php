@@ -67,7 +67,6 @@ class TransactionController extends Controller
         $amount_from = $request->amount_from;
         $basecurrency = Settings::first();
         $basecurrency_id = $basecurrency->currency_id;
-        $status = $request->status;
         $exchange_rate = $request->exchange_rate;
         $unit = $request->unit;
         if ($type == 'buy') {
@@ -75,29 +74,25 @@ class TransactionController extends Controller
                 $from_curency_id = $currency_id;
                 $to_curency_id = $basecurrency_id;
                 $amount_to = $amount_from * $exchange_rate;
-                $exchange_rate_id = $this->excahngerate->getFirstValueOf($from_curency_id, $to_curency_id)['id'];
-                $this->excahngerate->storebuytransaction($user_id, $from_curency_id, $to_curency_id, $amount_from, $amount_to, $exchange_rate_id, $type, $exchange_rate, $unit);
+                $this->transaction->storebuytransaction($user_id, $from_curency_id, $to_curency_id, $amount_from, $amount_to, $type, $exchange_rate, $unit);
             } else {
                 $from_curency_id = $currency_id;
                 $to_curency_id = $basecurrency_id;
                 $amount_to = ($amount_from / $unit) * $exchange_rate;
-                $exchange_rate_id = $this->excahngerate->getFirstValueOf($from_curency_id, $to_curency_id)['id'];
-                $this->excahngerate->storebuytransaction($user_id, $from_curency_id, $to_curency_id, $amount_from, $amount_to, $exchange_rate_id, $type, $exchange_rate, $unit);
+                $this->transaction->storebuytransaction($user_id, $from_curency_id, $to_curency_id, $amount_from, $amount_to, $type, $exchange_rate, $unit);
             }
         } else {
             if($unit == 1){
                 $from_curency_id = $basecurrency_id;
                 $to_curency_id = $currency_id;
                 $amount_to = $amount_from * $exchange_rate;
-                $exchange_rate_id = $this->excahngerate->getFirstValueOf($from_curency_id, $to_curency_id)['id'];
-                $this->excahngerate->storeselltransaction($user_id, $from_curency_id, $to_curency_id, $amount_from, $amount_to, $exchange_rate_id, $type, $exchange_rate, $unit);
+                $this->transaction->storeselltransaction($user_id, $from_curency_id, $to_curency_id, $amount_from, $amount_to, $type, $exchange_rate, $unit);
             
             }else{
                 $from_curency_id = $basecurrency_id;
                 $to_curency_id = $currency_id;
                 $amount_to = ($amount_from / $unit) * $exchange_rate;
-                $exchange_rate_id = $this->excahngerate->getFirstValueOf($from_curency_id, $to_curency_id)['id'];
-                $this->excahngerate->storeselltransaction($user_id, $from_curency_id, $to_curency_id, $amount_from, $amount_to, $exchange_rate_id, $type, $exchange_rate, $unit);
+                $this->transaction->storeselltransaction($user_id, $from_curency_id, $to_curency_id, $amount_from, $amount_to, $type, $exchange_rate, $unit);
             
             }
            }

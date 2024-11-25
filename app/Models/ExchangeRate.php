@@ -51,56 +51,7 @@ class ExchangeRate extends Model
             ->first();
     }
 
-    public function storebuytransaction(
-        int $user_id,
-        int $from_curency_id,
-        int $to_curency_id,
-        float $amount_from,
-        float $amount_to,
-        int $exchange_rate_id,
-        string $type,
-        float $exchange_rate,
-        int $unit
-    ) {
-        Transaction::create([
-            'user_id' => $user_id,
-            'from_wallet_id' => $from_curency_id,
-            'to_wallet_id' => $to_curency_id,
-            'from_amount' => $amount_from,
-            'to_amount' => $amount_to,
-            'exchange_rate_id' => $exchange_rate_id,
-            'status' => 'Completed',
-            'type' => $type,
-            'exchangerate' => $exchange_rate,
-            'unit' => $unit
-
-        ]);
-    }
-
-    public function storeselltransaction(
-        int $user_id,
-        int $from_curency_id,
-        int $to_curency_id,
-        float $amount_from,
-        float $amount_to,
-        int $exchange_rate_id,
-        string $type,
-        float $exchange_rate,
-        int $unit
-    ) {
-        Transaction::create([
-                'user_id' => $user_id,
-                'from_wallet_id' => $from_curency_id,
-                'to_wallet_id' => $to_curency_id,
-                'from_amount' => $amount_to,
-                'to_amount' => $amount_from,
-                'exchange_rate_id' => $exchange_rate_id,
-                'status' => 'Completed',
-                'type' => $type,
-                'exchangerate' => $exchange_rate,
-                'unit' => $unit
-            ]);
-    }
+    
     public function getliveexchangerate(){
         $todayDate = Carbon::today()->toDateString();
         $response = Http::get("https://www.nrb.org.np/api/forex/v1/rates", [
