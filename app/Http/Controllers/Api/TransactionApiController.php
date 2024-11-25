@@ -30,5 +30,11 @@ class TransactionApiController extends Controller
         $this->transaction->updatetransactioninfo($request);
         return response()->json(['message' => 'Transaction Edited successfully.']);
     }
+    public function transactiondelete(Request $request){
+        $id = $request->input('id');
+        $del = Transaction::find($id);
+        $del->delete();
+        return response()->json(['message' => 'Transaction deleted successfully.']);
+    }
     
 }

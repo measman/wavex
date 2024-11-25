@@ -19,3 +19,4 @@ Route::post('userupdate', [UserApiController::class, 'userupdate']);
 Route::get('transactioninfo', [TransactionApiController::class, 'transactioninfo']); 
 Route::post('transactionedit', [TransactionApiController::class, 'transactionedit']);
 Route::post('transactionupdate', [TransactionApiController::class, 'transactionupdate']);
+Route::post('transactiondelete', [TransactionApiController::class, 'transactiondelete']);

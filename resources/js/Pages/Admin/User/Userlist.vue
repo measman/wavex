@@ -26,7 +26,7 @@ onMounted(() => {
       { data: 'action_buttons' }
     ],
     destroy: true,
-    
+
   });
 });
 
@@ -67,8 +67,8 @@ $(document).on('click', '.user-edit', function () {
     },
     dataType: "JSON",
     success: function (data) {
-      form.id=data.id,
-      form.name = data.name;
+      form.id = data.id,
+        form.name = data.name;
       form.email = data.email;
       form.password = data.password;
       form.isAdmin = data.isAdmin;
@@ -86,19 +86,19 @@ var closeModal = () => {
 }
 
 const form = reactive({
-      id:'',
-      name: '',
-      email: '',
-      password: '',
-      isAdmin: false,
-    });
+  id: '',
+  name: '',
+  email: '',
+  password: '',
+  isAdmin: false,
+});
 
 const edituser = () => {
   console.log(form);
   $.ajax({
     url: "http://127.0.0.1:8000/api/userupdate",
     method: "POST",
-    data:form,
+    data: form,
     dataType: "JSON",
     success: function (data) {
       Swal.fire({
@@ -117,8 +117,8 @@ const edituser = () => {
 </script>
 <style>
 div.dt-container select.dt-input {
-    padding: 4px;
-    width: 60px;
+  padding: 4px;
+  width: 60px;
 }
 </style>
 <template>
@@ -218,8 +218,7 @@ div.dt-container select.dt-input {
                   Password
                 </label>
                 <input v-model="form.password" type="password" id="password"
-                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                   />
+                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
               </div>
 
 
@@ -235,11 +234,12 @@ div.dt-container select.dt-input {
           </div>
 
           <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-            <button
+            <button type="button"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-4"
-              :onclick="closeModal">
+              @click="closeModal">
               Cancel
             </button>
+
             <button type="submit"
               class="bg-indigo-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
               Save
