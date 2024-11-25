@@ -1,53 +1,108 @@
 <script setup>
-import { usePage, Link, useForm, router } from "@inertiajs/vue3";
-import Pagination from "@/Components/Pagination.vue";
-import { ref, computed, watch } from "vue";
-
+import { onMounted, reactive, ref } from 'vue';
+import { Link, useForm } from '@inertiajs/vue3';
+import DataTable from 'datatables.net-dt';
+import $ from 'jquery';
+import Swal from 'sweetalert2';
 defineProps({
     transactions: {
         type: Object,
         required: true,
     },
 });
+const dataSource = ref([]);
+onMounted(() => {
+    //    $.ajax({
+    //     type: "GET",
+    //     url: "http://localhost:8000/api/transactioninfo",
+    //     success: function (response) {
+    //         console.log(response);
+    //     }
+    //    });
+    $('#TransactionTable').DataTable({
+        ajax: {
+            url: 'http://localhost:8000/api/transactioninfo',
+            dataSrc: function (json) {
+                dataSource.value = json.data; // Set the dataSource to the fetched data
+                return json.data;
+            },
+        },
+        columns: [
+            { data: 'id' },
+            { data: 'name' },
+            { data: 'from_currency' },
+            { data: 'to_currency' },
+            { data: 'exchangerate' },
+            { data: 'type' },
+            { data: 'status' },
+            { data: 'action_buttons' }
+        ],
+        destroy: true,
 
-let search = ref(usePage().props.search),
-    pageNumber = ref(1);
-
-let transactionsUrl = computed(() => {
-    let url = new URL(route("transactions.index"));
-    url.searchParams.append("page", pageNumber.value);
-    if(search.value){
-        url.searchParams.append("search",search.value);
-    }
-    return url;
+    });
 });
+var openModal = () => {
+    document.getElementById("transactionModal").classList.remove("hidden");
+}
 
-watch(
-    () => transactionsUrl.value,
-    (updatedtransactionsUrl) => {
-        router.visit(updatedtransactionsUrl, {
-            preserveScroll: true,
-            preserveState: true,
-            replace: true,
-        });
-    }
-);
+var closeModal = () => {
+    document.getElementById("transactionModal").classList.add("hidden");
+}
 
-const updatedPageNumber = (link) => {
-    pageNumber.value = link.url.split("=")[1];
-};
+const form = reactive({
+    id: '',
+    status: '',
+});
+$(document).on('click', '.transaction-edit', function () {
+    openModal();
+    var transaction_id = $(this).data('id');
+    $.ajax({
+        url: "http://127.0.0.1:8000/api/transactionedit",
+        method: "POST",
+        data: {
+            id: transaction_id
+        },
+        dataType: "JSON",
+        success: function (data) {
+            form.id = data.id,
+                form.status = data.status;
+            console.log(data);
+        }
+    });
+});
+const edittransaction = () => {
+    console.log(form);
+      $.ajax({
+        url: "http://127.0.0.1:8000/api/transactionupdate",
+        method: "POST",
+        data:form,
+        dataType: "JSON",
+        success: function (data) {
+          Swal.fire({
+            title: 'Success',
+            text: data.message,
+            icon: 'success',
+            confirmButtonText: 'OK',
+            buttonsStyling: true
+          }).then(() => {
+            $('#TransactionTable').DataTable().ajax.reload(null, false);
+            closeModal();
+          });
+        }
+      });
+} 
 
-const deleteForm = useForm({});
-const deletetransaction = (transactionId) => {
-    if (confirm("Are you sure you want to delete?")) {
-        deleteForm.delete(route("transactions.destroy", transactionId));
-    }
-};
+
 </script>
-
+<style>
+div.dt-container select.dt-input {
+    padding: 4px;
+    width: 60px;
+}
+</style>
 <template>
     <div class="bg-gray-100 py-10">
-        <div class="mx-auto max-w-7xl">
+        <div class="mx-auto max-w-8xl">
             <div class="px-4 sm:px-6 lg:px-8">
                 <div class="sm:flex sm:items-center">
                     <div class="sm:flex-auto">
@@ -56,175 +111,111 @@ const deletetransaction = (transactionId) => {
                         </h1>
                     </div>
                     <div class="mt-4 sm:mt-0 sm:ml-4 sm:flex-none">
-                        <Link
-                            :href="route('transactions.create')"
-                            class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-                        >
-                            Add Transactions
+                        <Link :href="route('transactions.create')"
+                            class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">
+                        Add Transactions
                         </Link>
                     </div>
                 </div>
 
                 <div class="mt-8 flex flex-col">
                     <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="relative text-sm text-gray-800 col-span-3">
-                            <div
-                                class="absolute pl-2 left-0 top-0 bottom-0 flex items-center pointer-events-none text-gray-500">
-                                <MagnifyingGlass />
-                            </div>
-
-                            <input v-model="search" type="text" autocomplete="off" placeholder="Search  data..."
-                                id="search"
-                                class="block rounded-lg border-0 mx-8 py-2 pl-10 text-gray-900 ring-1 ring-inset ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-
-                        </div>
-                        <div
-                            class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8"
-                        >
-                            <div
-                                class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg relative"
-                            >
-                                <table
-                                    class="min-w-full divide-y divide-gray-300"
-                                >
+                        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                            <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg relative">
+                                <table class="min-w-full divide-y divide-gray-300" id="TransactionTable">
                                     <thead class="bg-gray-50">
                                         <tr>
-                                            <th
-                                                scope="col"
-                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                                            >
+                                            <th scope="col"
+                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
                                                 ID
                                             </th>
-                                            <th
-                                                scope="col"
-                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                                            >
+                                            <th scope="col"
+                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
                                                 User
                                             </th>
-                                            <th
-                                                scope="col"
-                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                                            >
+                                            <th scope="col"
+                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
                                                 From Amount
                                             </th>
-                                            <th
-                                                scope="col"
-                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                                            >
+                                            <th scope="col"
+                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
                                                 To Amount
                                             </th>
-                                            <th
-                                                scope="col"
-                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                                            >
+                                            <th scope="col"
+                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
                                                 Exchange Rate
                                             </th>
-                                            <th
-                                                scope="col"
-                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                                            >
+                                            <th scope="col"
+                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
                                                 Type
                                             </th>
-                                            <th
-                                                scope="col"
-                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                                            >
+                                            <th scope="col"
+                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
                                                 Status
                                             </th>
 
-                                            <th
-                                                scope="col"
-                                                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                                            >
+                                            <th scope="col"
+                                                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                                 Action
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody
-                                        class="divide-y divide-gray-200 bg-white"
-                                    >
-                                        <tr
-                                            v-for="transaction in transactions.data"
-                                            :key="transaction.id"
-                                        >
-                                            <td
-                                                class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
-                                            >
-                                                {{ transaction.id }}
-                                            </td>
-                                            <td
-                                                class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
-                                            >
-                                                {{ transaction.user.name }}
-                                            </td>
-                                            <td
-                                                class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
-                                            >
-                                                {{
-                                                    transaction.exchange_rate
-                                                        .from_currency.code
-                                                }}
-                                                {{ transaction.from_amount }}
-                                            </td>
-                                            <td
-                                                class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
-                                            >
-                                                {{
-                                                    transaction.exchange_rate
-                                                        .to_currency.code
-                                                }}
-                                                {{ transaction.to_amount }}
-                                            </td>
-                                            <td
-                                                class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
-                                            >
-                                                {{
-                                                    transaction.exchange_rate
-                                                        .rate
-                                                }}
-                                            </td>
-                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{
-                                                transaction.type }}</td>
-                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 border border-green-100 dark:border-green-500">{{
-                                                transaction.status }}</span></td>
-
-                                            <td
-                                                class="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6"
-                                            >
-                                                <Link
-                                                    :href="
-                                                        route(
-                                                            'transactions.edit',
-                                                            transaction.id
-                                                        )
-                                                    "
-                                                    class="text-indigo-600 hover:text-indigo-900"
-                                                    >Edit</Link
-                                                >
-                                                <Link
-                                                    @click="
-                                                        deletetransaction(
-                                                            transaction.id
-                                                        )
-                                                    "
-                                                    class="ml-2 text-indigo-600 hover:text-indigo-900"
-                                                >
-                                                    Delete
-                                                </Link>
-                                            </td>
-                                        </tr>
-                                        <!-- Handle empty state if no data is present -->
+                                    <tbody class="divide-y divide-gray-200 bg-white">
                                     </tbody>
                                 </table>
                             </div>
-                            <Pagination
-                                :data="transactions"
-                                :updatedPageNumber="updatedPageNumber"
-                            />
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="transactionModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg w-1/3">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center border-b p-4">
+                <h2 class="text-lg font-bold">Edit Transaction</h2>
+                <button class="text-gray-400 hover:text-gray-600" :onclick="closeModal">
+                    &times;
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <form @submit.prevent="edittransaction">
+                <div class="shadow sm:rounded-md sm:overflow-hidden">
+                    <div class="bg-white py-6 px-4 space-y-6 sm:p-6">
+                        <div class="grid grid-cols-6 gap-6">
+                            <input type="hidden" name="hidden" v-model="form.id">
+                            <!-- Name Field -->
+                            <div class="col-span-6 sm:col-span-6">
+                                <label for="type" class="block text-sm font-medium text-gray-700">
+                                    Select Type:
+                                </label>
+                                <select v-model="form.status" id="type"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                    required>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Failed">Failed</option>
+                                    <option value="Pending">Pending</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                        <button
+                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-4"
+                            :onclick="closeModal">
+                            Cancel
+                        </button>
+                        <button type="submit"
+                            class="bg-indigo-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Save
+                        </button>
+                    </div>
+
+                </div>
+            </form>
         </div>
     </div>
 </template>
