@@ -16,11 +16,15 @@ var token=usePage().props.token;
 console.log(token);
 const dataSource = ref([]);
 let baseUrl = window.location.origin;
-let endpoint = '/api/transactioninfo';
+let endpointfortransactioninfo = '/api/transactioninfo';
+let endpointfortransactionedit = '/api/transactionedit';
+let endpointfortransactionupdate = '/api/transactionupdate';
+let endpointfortransactiondelete = '/api/transactiondelete';
+
 onMounted(() => {
     $('#TransactionTable').DataTable({
         ajax: {
-            url: baseUrl + endpoint,
+            url: baseUrl + endpointfortransactioninfo,
             headers: {
             'Authorization': 'Bearer ' + usePage().props.token 
         },
@@ -59,7 +63,7 @@ $(document).on('click', '.transaction-edit', function () {
     openModal();
     var transaction_id = $(this).data('id');
     $.ajax({
-        url: "http://127.0.0.1:8000/api/transactionedit",
+        url:  baseUrl + endpointfortransactionedit,
         method: "POST",
         data: {
             id: transaction_id
@@ -75,7 +79,7 @@ $(document).on('click', '.transaction-edit', function () {
 const edittransaction = () => {
     console.log(form);
     $.ajax({
-        url: "http://127.0.0.1:8000/api/transactionupdate",
+        url: baseUrl + endpointfortransactionupdate,
         method: "POST",
         data: form,
         dataType: "JSON",
@@ -98,7 +102,7 @@ $(document).on('click', '.transaction-delete', function () {
     console.log(transaction_id);
     if (confirm("Are you sure you want to delete it?")) {
         $.ajax({
-            url: "http://127.0.0.1:8000/api/transactiondelete",
+            url: baseUrl + endpointfortransactiondelete,
             method: "POST",
             data: {
                 id: transaction_id

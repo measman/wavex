@@ -7,11 +7,15 @@ import Swal from 'sweetalert2';
 
 
 const dataSource = ref([]);
-
+let baseUrl = window.location.origin;
+let endpointuserinfo = '/api/userinfo';
+let endpointuseredit = '/api/useredit';
+let endpointuserupdate = '/api/userupdate';
+let endpointuserdelete = '/api/userdelete';
 onMounted(() => {
   $('#userTable').DataTable({
     ajax: {
-      url: 'http://localhost:8000/api/userinfo',
+      url: baseUrl + endpointuserinfo,
       dataSrc: function (json) {
         dataSource.value = json.data; // Set the dataSource to the fetched data
         return json.data;
@@ -35,7 +39,7 @@ $(document).on('click', '.user-delete', function () {
   console.log(user_id);
   if (confirm("Are you sure you want to delete it?")) {
     $.ajax({
-      url: "http://127.0.0.1:8000/api/userdelete",
+      url: baseUrl + endpointuserdelete,
       method: "POST",
       data: {
         id: user_id
@@ -60,7 +64,7 @@ $(document).on('click', '.user-edit', function () {
   openModal();
   var user_id = $(this).data('id');
   $.ajax({
-    url: "http://127.0.0.1:8000/api/useredit",
+    url:baseUrl + endpointuseredit,
     method: "POST",
     data: {
       id: user_id
@@ -96,7 +100,7 @@ const form = reactive({
 const edituser = () => {
   console.log(form);
   $.ajax({
-    url: "http://127.0.0.1:8000/api/userupdate",
+    url: baseUrl + endpointuserupdate,
     method: "POST",
     data: form,
     dataType: "JSON",
