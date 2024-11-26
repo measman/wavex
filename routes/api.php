@@ -16,6 +16,6 @@ Route::get('userinfo', [UserApiController::class, 'userinfo']);
 Route::post('userdelete', [UserApiController::class, 'userdelete']);
 Route::post('useredit', [UserApiController::class, 'useredit']);
 Route::post('userupdate', [UserApiController::class, 'userupdate']);
-Route::get('transactioninfo', [TransactionApiController::class, 'transactioninfo']); 
+Route::get('transactioninfo', [TransactionApiController::class, 'transactioninfo'])->middleware('auth:sanctum');
 Route::post('transactionedit', [TransactionApiController::class, 'transactionedit']);
 Route::post('transactionupdate', [TransactionApiController::class, 'transactionupdate']);

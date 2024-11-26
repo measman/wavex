@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -34,6 +36,11 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         if (Auth::user()->isAdmin) {
+            $user = User::where('email', Auth::user()->email)->first();
+            $token = $user->createToken($user->name);
+            //dd($token);
+            $session=$token->plainTextToken;
+            session(['auth_token' => $session]);
             return redirect()->route('admin.dashboard');
         }
 
