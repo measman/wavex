@@ -8,11 +8,11 @@ defineProps({
     transactions: {
         type: Object,
         required: true,
-        
+
     },
-    token:String,
+    token: String,
 });
-var token=usePage().props.token;
+var token = usePage().props.token;
 console.log(token);
 const dataSource = ref([]);
 let baseUrl = window.location.origin;
@@ -26,8 +26,8 @@ onMounted(() => {
         ajax: {
             url: baseUrl + endpointfortransactioninfo,
             headers: {
-            'Authorization': 'Bearer ' + usePage().props.token 
-        },
+                'Authorization': 'Bearer ' + usePage().props.token
+            },
             dataSrc: function (json) {
                 dataSource.value = json.data; // Set the dataSource to the fetched data
                 return json.data;
@@ -63,7 +63,10 @@ $(document).on('click', '.transaction-edit', function () {
     openModal();
     var transaction_id = $(this).data('id');
     $.ajax({
-        url:  baseUrl + endpointfortransactionedit,
+        url: baseUrl + endpointfortransactionedit,
+        headers: {
+            'Authorization': 'Bearer ' + usePage().props.token
+        },
         method: "POST",
         data: {
             id: transaction_id
@@ -80,6 +83,9 @@ const edittransaction = () => {
     console.log(form);
     $.ajax({
         url: baseUrl + endpointfortransactionupdate,
+        headers: {
+            'Authorization': 'Bearer ' + usePage().props.token
+        },
         method: "POST",
         data: form,
         dataType: "JSON",
@@ -103,6 +109,9 @@ $(document).on('click', '.transaction-delete', function () {
     if (confirm("Are you sure you want to delete it?")) {
         $.ajax({
             url: baseUrl + endpointfortransactiondelete,
+            headers: {
+                'Authorization': 'Bearer ' + usePage().props.token
+            },
             method: "POST",
             data: {
                 id: transaction_id
