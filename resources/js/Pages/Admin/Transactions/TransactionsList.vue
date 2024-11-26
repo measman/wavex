@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
-import { Link, useForm } from '@inertiajs/vue3';
+import { Link, useForm, usePage } from '@inertiajs/vue3';
 import DataTable from 'datatables.net-dt';
 import $ from 'jquery';
 import Swal from 'sweetalert2';
@@ -8,8 +8,12 @@ defineProps({
     transactions: {
         type: Object,
         required: true,
+        
     },
+    token:String,
 });
+var token=usePage().props.token;
+console.log(token);
 const dataSource = ref([]);
 onMounted(() => {
     //    $.ajax({
@@ -22,6 +26,9 @@ onMounted(() => {
     $('#TransactionTable').DataTable({
         ajax: {
             url: 'http://localhost:8000/api/transactioninfo',
+            headers: {
+            'Authorization': 'Bearer ' + usePage().props.token 
+        },
             dataSrc: function (json) {
                 dataSource.value = json.data; // Set the dataSource to the fetched data
                 return json.data;

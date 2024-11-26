@@ -39,9 +39,12 @@ class TransactionController extends Controller
         $transactions = TransactionResource::collection(
             $transactionQuery->paginate(10)
         );
+        $authToken = session('auth_token');
+        //dd($authToken);
         return Inertia::render('Admin/Transactions/index', [
             'transactions' => $transactions,
             'search' => $request->input('search') ?? '',
+            'token'=>$authToken
         ]);
     }
 
