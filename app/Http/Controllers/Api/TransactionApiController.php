@@ -15,6 +15,7 @@ class TransactionApiController extends Controller
     {
         $this->transaction = $transaction;
     }
+    
     public function transactioninfo(){
         $data = $this->transaction->fetchall();
         return response()->json(['data' => $data]);

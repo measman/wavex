@@ -15,17 +15,12 @@ defineProps({
 var token=usePage().props.token;
 console.log(token);
 const dataSource = ref([]);
+let baseUrl = window.location.origin;
+let endpoint = '/api/transactioninfo';
 onMounted(() => {
-    //    $.ajax({
-    //     type: "GET",
-    //     url: "http://localhost:8000/api/transactioninfo",
-    //     success: function (response) {
-    //         console.log(response);
-    //     }
-    //    });
     $('#TransactionTable').DataTable({
         ajax: {
-            url: 'http://localhost:8000/api/transactioninfo',
+            url: baseUrl + endpoint,
             headers: {
             'Authorization': 'Bearer ' + usePage().props.token 
         },
