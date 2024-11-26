@@ -1,16 +1,15 @@
 <script setup>
-import { usePage, useForm } from '@inertiajs/vue3';
-import AdminLayout from '../Components/AdminLayout.vue';
-import { ref, watch } from 'vue';
+import { usePage, useForm } from "@inertiajs/vue3";
+import AdminLayout from "../Components/AdminLayout.vue";
+import { ref, watch } from "vue";
 
 // Define props
 const props = defineProps({
     transactions: Object,
     excahngerates: Object,
     currencies: Object,
-    extrainfo:Array,
+    extrainfo: Array,
     todaysexchangerate: Array,
-    
 });
 
 // Form state
@@ -19,9 +18,8 @@ const form = useForm({
     amount_from: "",
     type: "buy",
     exchange_rate: "",
-    unit: ""
+    unit: "",
 });
-
 
 // Watcher for form.excurrency
 watch(
@@ -33,21 +31,19 @@ watch(
 
 // Function to get live rates
 const getliverates = (type) => {
-    props.todaysexchangerate.forEach(rate => {
-        if (type == 'buy') {
-            if (rate.currency.iso3 == form.excurrency['code']) {
-            form.exchange_rate=rate.buy;
-            form.unit=rate.currency.unit;
-        }
+    props.todaysexchangerate.forEach((rate) => {
+        if (type == "buy") {
+            if (rate.currency.iso3 == form.excurrency["code"]) {
+                form.exchange_rate = rate.buy;
+                form.unit = rate.currency.unit;
+            }
         } else {
-            if (rate.currency.iso3 == form.excurrency['code']) {
-            form.exchange_rate=rate.sell;
-            form.unit=rate.currency.unit;
+            if (rate.currency.iso3 == form.excurrency["code"]) {
+                form.exchange_rate = rate.sell;
+                form.unit = rate.currency.unit;
+            }
         }
-        }
-        
     });
-    
 };
 watch(
     () => form.excurrency,
@@ -58,41 +54,39 @@ watch(
 
 // Function to get live rates
 const getliveratesnew = (excurrency) => {
-    props.todaysexchangerate.forEach(rate => {
-        if (form.type == 'buy') {
-            if (rate.currency.iso3 == excurrency['code']) {
-            form.exchange_rate=rate.buy;
-            form.unit=rate.currency.unit;
-        }
+    props.todaysexchangerate.forEach((rate) => {
+        if (form.type == "buy") {
+            if (rate.currency.iso3 == excurrency["code"]) {
+                form.exchange_rate = rate.buy;
+                form.unit = rate.currency.unit;
+            }
         } else {
-            if (rate.currency.iso3 == excurrency['code']) {
-            form.exchange_rate=rate.sell;
-            form.unit=rate.currency.unit;
+            if (rate.currency.iso3 == excurrency["code"]) {
+                form.exchange_rate = rate.sell;
+                form.unit = rate.currency.unit;
+            }
         }
-        }
-        
     });
-    
 };
 watch(
-    ()=>form.amount_from,
-    (amount)=>{
+    () => form.amount_from,
+    (amount) => {
         toamount(amount);
     }
 );
 
-const toamount=(amount)=>{
-    var newamount=amount;
+const toamount = (amount) => {
+    var newamount = amount;
     var exrate = form.exchange_rate;
     var unit = form.unit;
     var convertedamount = (newamount / unit) * exrate;
-    document.getElementById('camount').value = convertedamount;  
-}
+    document.getElementById("camount").value = convertedamount;
+};
 
 // Function to submit the form
 const submitForm = () => {
     console.log(form);
-    form.post(route('transactions.store'));
+    form.post(route("transactions.store"));
 };
 </script>
 
@@ -100,15 +94,14 @@ const submitForm = () => {
     <AdminLayout>
         <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
             <div class="lg:grid lg:grid-cols-12 lg:gap-x-5">
-                <div class="space-y-6 sm:px-6 lg:px-0 lg:col-span-12">
+                <!-- Left Section: Existing Content -->
+                <div class="space-y-6 sm:px-6 lg:px-0 lg:col-span-8">
                     <form @submit.prevent="submitForm">
                         <div>
                             <h3 class="text-lg leading-6 font-medium text-gray-900">
                                 Transacitons
                             </h3>
-                            <p class="mt-1 text-sm text-gray-500">
-                                Transaciton id : {{ props.extrainfo.id +1 }}
-                            </p>
+                            
                         </div>
                         <div class="grid grid-cols-6 gap-6">
                             <div class="col-span-6 sm:col-span-3">
@@ -135,13 +128,17 @@ const submitForm = () => {
                                     class="{'mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm}"
                                     required>
                                     <option value="">Select</option>
-                                    <option v-for="item in currencies.data" :key="item.id"
-                                        :value="{ id: item.id, code: item.code }">
-                                        {{ item.code }}</option>
+                                    <option v-for="item in currencies.data" :key="item.id" :value="{
+                                        id: item.id,
+                                        code: item.code,
+                                    }">
+                                        {{ item.code }}
+                                    </option>
                                 </select>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
-                                <label for="fromcurrency" class="block text-sm font-medium text-gray-700">From Currency</label>
+                                <label for="fromcurrency" class="block text-sm font-medium text-gray-700">From
+                                    Currency</label>
                                 <input type="text" id="fromcurrency" disabled :value="form.excurrency.code"
                                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                             </div>
@@ -152,13 +149,12 @@ const submitForm = () => {
                                     required />
                             </div>
                             <div class="col-span-6 sm:col-span-3">
-                                <label for="tocurrency" class="block text-sm font-medium text-gray-700">To Currency</label>
+                                <label for="tocurrency" class="block text-sm font-medium text-gray-700">To
+                                    Currency</label>
                                 <input type="text" id="tocurrency" disabled value="NPR"
                                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                             </div>
-                            
-                            
-                            
+
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="exchange_rate" class="block text-sm font-medium text-gray-700">Exchange
                                     Rate</label>
@@ -166,7 +162,7 @@ const submitForm = () => {
                                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                     required />
                             </div>
-                            
+
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="unit" class="block text-sm font-medium text-gray-700">Unit</label>
                                 <input v-model="form.unit" type="text" id="unit"
@@ -174,14 +170,12 @@ const submitForm = () => {
                                     required />
                             </div>
 
-                            <div class="col-span-6 sm:col-span-3"></div>
+                            <!-- <div class="col-span-6 sm:col-span-3"></div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="camount" class="block text-sm font-medium text-gray-700">Converted Amount</label>
                                 <input type="text" id="camount" disabled
                                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                            </div>
-                            
-
+                            </div> -->
                         </div>
                         <div class="flex justify-end mt-4">
                             <button type="submit"
@@ -190,7 +184,39 @@ const submitForm = () => {
                             </button>
                         </div>
                     </form>
+                </div>
 
+                <!-- Right Section: New Content -->
+                <div class="space-y-6 sm:px-6 lg:px-0 lg:col-span-4">
+                    <div class="p-4 bg-white shadow rounded-lg">
+                        <h3 class="text-lg font-medium text-gray-900">
+                            Transaction Summary
+                        </h3>
+                        <p class="mt-2 text-sm text-gray-500">
+                            Review transaction details before submitting.
+                        </p>
+                        <ul class="mt-4 space-y-2 text-sm text-gray-700">
+                            <li>
+                                <strong>Transaction ID:</strong>
+                                #{{ props.extrainfo.id + 1 }}
+                            </li>
+                            <li>
+                                <strong>Transaction Date:</strong>
+                                {{ props.extrainfo.date }}
+                            </li>
+                            <li>
+                                <strong>Exchange Type:</strong> {{ form.type }}
+                            </li>
+                            <li>
+                                <strong>Currency:</strong>
+                                {{ form.excurrency.code }}
+                            </li>
+                            <li>
+                                <strong>Amount:</strong> {{ form.amount_from }}
+                            </li>
+                            <li><strong>Converted Amount:</strong> NPR <span id="camount"></span></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
