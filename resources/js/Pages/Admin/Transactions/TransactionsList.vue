@@ -8,27 +8,26 @@ defineProps({
     transactions: {
         type: Object,
         required: true,
-        
+
     },
-    token:String,
+    token: String,
 });
-var token=usePage().props.token;
+var token = usePage().props.token;
 console.log(token);
 const dataSource = ref([]);
+let baseUrl = window.location.origin;
+let endpointfortransactioninfo = '/api/transactioninfo';
+let endpointfortransactionedit = '/api/transactionedit';
+let endpointfortransactionupdate = '/api/transactionupdate';
+let endpointfortransactiondelete = '/api/transactiondelete';
+
 onMounted(() => {
-    //    $.ajax({
-    //     type: "GET",
-    //     url: "http://localhost:8000/api/transactioninfo",
-    //     success: function (response) {
-    //         console.log(response);
-    //     }
-    //    });
     $('#TransactionTable').DataTable({
         ajax: {
-            url: 'http://localhost:8000/api/transactioninfo',
+            url: baseUrl + endpointfortransactioninfo,
             headers: {
-            'Authorization': 'Bearer ' + usePage().props.token 
-        },
+                'Authorization': 'Bearer ' + usePage().props.token
+            },
             dataSrc: function (json) {
                 dataSource.value = json.data; // Set the dataSource to the fetched data
                 return json.data;
@@ -64,7 +63,10 @@ $(document).on('click', '.transaction-edit', function () {
     openModal();
     var transaction_id = $(this).data('id');
     $.ajax({
-        url: "http://127.0.0.1:8000/api/transactionedit",
+        url: baseUrl + endpointfortransactionedit,
+        headers: {
+            'Authorization': 'Bearer ' + usePage().props.token
+        },
         method: "POST",
         data: {
             id: transaction_id
@@ -79,26 +81,56 @@ $(document).on('click', '.transaction-edit', function () {
 });
 const edittransaction = () => {
     console.log(form);
-      $.ajax({
-        url: "http://127.0.0.1:8000/api/transactionupdate",
+    $.ajax({
+        url: baseUrl + endpointfortransactionupdate,
+        headers: {
+            'Authorization': 'Bearer ' + usePage().props.token
+        },
         method: "POST",
-        data:form,
+        data: form,
         dataType: "JSON",
         success: function (data) {
-          Swal.fire({
-            title: 'Success',
-            text: data.message,
-            icon: 'success',
-            confirmButtonText: 'OK',
-            buttonsStyling: true
-          }).then(() => {
-            $('#TransactionTable').DataTable().ajax.reload(null, false);
-            closeModal();
-          });
+            Swal.fire({
+                title: 'Success',
+                text: data.message,
+                icon: 'success',
+                confirmButtonText: 'OK',
+                buttonsStyling: true
+            }).then(() => {
+                $('#TransactionTable').DataTable().ajax.reload(null, false);
+                closeModal();
+            });
         }
-      });
-} 
-
+    });
+}
+$(document).on('click', '.transaction-delete', function () {
+    var transaction_id = $(this).data('id');
+    console.log(transaction_id);
+    if (confirm("Are you sure you want to delete it?")) {
+        $.ajax({
+            url: baseUrl + endpointfortransactiondelete,
+            headers: {
+                'Authorization': 'Bearer ' + usePage().props.token
+            },
+            method: "POST",
+            data: {
+                id: transaction_id
+            },
+            dataType: "JSON",
+            success: function (data) {
+                Swal.fire({
+                    title: 'Success',
+                    text: data.message,
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    buttonsStyling: true
+                }).then(() => {
+                    $('#TransactionTable').DataTable().ajax.reload(null, false);
+                });
+            }
+        });
+    }
+});
 
 </script>
 <style>
@@ -210,11 +242,12 @@ div.dt-container select.dt-input {
                         </div>
                     </div>
                     <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                        <button
+                        <button type="button"
                             class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-4"
-                            :onclick="closeModal">
+                            @click="closeModal">
                             Cancel
                         </button>
+
                         <button type="submit"
                             class="bg-indigo-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             Save

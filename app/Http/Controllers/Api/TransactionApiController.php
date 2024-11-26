@@ -15,6 +15,7 @@ class TransactionApiController extends Controller
     {
         $this->transaction = $transaction;
     }
+    
     public function transactioninfo(){
         $data = $this->transaction->fetchall();
         return response()->json(['data' => $data]);
@@ -29,6 +30,12 @@ class TransactionApiController extends Controller
     public function transactionupdate(Request $request){
         $this->transaction->updatetransactioninfo($request);
         return response()->json(['message' => 'Transaction Edited successfully.']);
+    }
+    public function transactiondelete(Request $request){
+        $id = $request->input('id');
+        $del = Transaction::find($id);
+        $del->delete();
+        return response()->json(['message' => 'Transaction deleted successfully.']);
     }
     
 }
