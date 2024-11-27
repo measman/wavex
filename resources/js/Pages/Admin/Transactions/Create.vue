@@ -12,6 +12,8 @@ const props = defineProps({
     todaysexchangerate: Array,
 });
 
+var convertedamount = ref();
+
 // Form state
 const form = useForm({
     excurrency: "",
@@ -79,8 +81,7 @@ const toamount = (amount) => {
     var newamount = amount;
     var exrate = form.exchange_rate;
     var unit = form.unit;
-    var convertedamount = (newamount / unit) * exrate;
-    document.getElementById("camount").value = convertedamount;
+    convertedamount = (newamount / unit) * exrate;
 };
 
 // Function to submit the form
@@ -214,7 +215,7 @@ const submitForm = () => {
                             <li>
                                 <strong>Amount:</strong> {{ form.amount_from }}
                             </li>
-                            <li><strong>Converted Amount:</strong> NPR <span id="camount"></span></li>
+                            <li><strong>Converted Amount:</strong> NPR <span id="camount">{{ convertedamount }}</span></li>
                         </ul>
                     </div>
                 </div>
