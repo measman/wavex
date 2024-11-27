@@ -1,11 +1,14 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
-import { Link, useForm } from '@inertiajs/vue3';
+import { Link, useForm, usePage } from '@inertiajs/vue3';
 import DataTable from 'datatables.net-dt';
 import $ from 'jquery';
 import Swal from 'sweetalert2';
 
 
+defineProps({
+  token:String,
+});
 const dataSource = ref([]);
 let baseUrl = window.location.origin;
 let endpointuserinfo = '/api/userinfo';
@@ -16,6 +19,9 @@ onMounted(() => {
   $('#userTable').DataTable({
     ajax: {
       url: baseUrl + endpointuserinfo,
+      headers: {
+                'Authorization': 'Bearer ' + usePage().props.token
+            },
       dataSrc: function (json) {
         dataSource.value = json.data; // Set the dataSource to the fetched data
         return json.data;
@@ -40,6 +46,9 @@ $(document).on('click', '.user-delete', function () {
   if (confirm("Are you sure you want to delete it?")) {
     $.ajax({
       url: baseUrl + endpointuserdelete,
+      headers: {
+                'Authorization': 'Bearer ' + usePage().props.token
+            },
       method: "POST",
       data: {
         id: user_id
@@ -65,6 +74,9 @@ $(document).on('click', '.user-edit', function () {
   var user_id = $(this).data('id');
   $.ajax({
     url:baseUrl + endpointuseredit,
+    headers: {
+                'Authorization': 'Bearer ' + usePage().props.token
+            },
     method: "POST",
     data: {
       id: user_id
@@ -101,6 +113,9 @@ const edituser = () => {
   console.log(form);
   $.ajax({
     url: baseUrl + endpointuserupdate,
+    headers: {
+                'Authorization': 'Bearer ' + usePage().props.token
+            },
     method: "POST",
     data: form,
     dataType: "JSON",

@@ -12,11 +12,13 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('feetest',FeeApiController::class);
-Route::get('userinfo', [UserApiController::class, 'userinfo']);
-Route::post('userdelete', [UserApiController::class, 'userdelete']);
-Route::post('useredit', [UserApiController::class, 'useredit']);
-Route::post('userupdate', [UserApiController::class, 'userupdate']);
-Route::get('/transactioninfo', [TransactionApiController::class, 'transactioninfo'])->middleware('auth:sanctum');
-Route::post('transactionedit', [TransactionApiController::class, 'transactionedit'])->middleware('auth:sanctum');
-Route::post('transactionupdate', [TransactionApiController::class, 'transactionupdate'])->middleware('auth:sanctum');
-Route::post('transactiondelete', [TransactionApiController::class, 'transactiondelete'])->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('userinfo', [UserApiController::class, 'userinfo']);
+    Route::post('userdelete', [UserApiController::class, 'userdelete']);
+    Route::post('useredit', [UserApiController::class, 'useredit']);
+    Route::post('userupdate', [UserApiController::class, 'userupdate']);
+    Route::get('/transactioninfo', [TransactionApiController::class, 'transactioninfo']);
+    Route::post('transactionedit', [TransactionApiController::class, 'transactionedit']);
+    Route::post('transactionupdate', [TransactionApiController::class, 'transactionupdate']);
+    Route::post('transactiondelete', [TransactionApiController::class, 'transactiondelete']);
+});
