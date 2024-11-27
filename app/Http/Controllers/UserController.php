@@ -13,7 +13,8 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        return Inertia::render('Admin/User/index');
+        $authToken = session('auth_token');
+        return Inertia::render('Admin/User/index',['token'=>$authToken]);
     }
 
     public function create()

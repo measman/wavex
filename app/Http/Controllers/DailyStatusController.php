@@ -33,14 +33,14 @@ class DailyStatusController extends Controller
             if (!isset($userWalletBalances[$transaction->user_id])) {
                 $userWalletBalances[$transaction->user_id] = [];
             }
-            if (!isset($userWalletBalances[$transaction->user_id][$transaction->from_wallet_id])) {
-                $userWalletBalances[$transaction->user_id][$transaction->from_wallet_id] = 0;
+            if (!isset($userWalletBalances[$transaction->user_id][$transaction->from_currency_id])) {
+                $userWalletBalances[$transaction->user_id][$transaction->from_currency_id] = 0;
             }
-            $userWalletBalances[$transaction->user_id][$transaction->from_wallet_id] += $transaction->from_amount;
-            if (!isset($userWalletBalances[$transaction->user_id][$transaction->to_wallet_id])) {
-                $userWalletBalances[$transaction->user_id][$transaction->to_wallet_id] = 0;
+            $userWalletBalances[$transaction->user_id][$transaction->from_currency_id] += $transaction->from_amount;
+            if (!isset($userWalletBalances[$transaction->user_id][$transaction->to_currency_id])) {
+                $userWalletBalances[$transaction->user_id][$transaction->to_currency_id] = 0;
             }
-            $userWalletBalances[$transaction->user_id][$transaction->to_wallet_id] -= $transaction->to_amount;
+            $userWalletBalances[$transaction->user_id][$transaction->to_currency_id] -= $transaction->to_amount;
         }
         foreach ($userWalletBalances as $userId => $wallets) {
             $id = $userId;
