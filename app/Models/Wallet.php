@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 class Wallet extends Model
 {
     /** @use HasFactory<\Database\Factories\WalletFactory> */
@@ -32,6 +33,15 @@ class Wallet extends Model
             });
         });
     });
+}
+public function fetchall(){
+
+    $transactions = Wallet::leftJoin('users', 'users.id', '=', 'wallets.user_id')
+    ->leftJoin('currencies', 'currencies.id', '=', 'wallets.currency_id')
+    ->select('wallets.user_id', 'users.name', 'currencies.code', DB::raw('SUM(wallets.balance) as total_balance'))
+    ->groupBy('wallets.user_id', 'users.name', 'currencies.code')
+    ->get();
+    return($transactions);
 }
 
 }

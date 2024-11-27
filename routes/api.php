@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\FeeApiController;
 use App\Http\Controllers\Api\TransactionApiController;
 use App\Http\Controllers\Api\UserApiController;
+use App\Http\Controllers\Api\WalletApiController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,4 +22,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('transactionedit', [TransactionApiController::class, 'transactionedit']);
     Route::post('transactionupdate', [TransactionApiController::class, 'transactionupdate']);
     Route::post('transactiondelete', [TransactionApiController::class, 'transactiondelete']);
+    Route::get('/walletinfo', [WalletApiController::class, 'walletinfo']);
 });
