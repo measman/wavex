@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 use function Pest\Laravel\from;
 
@@ -145,6 +146,31 @@ class Transaction extends Model
                 'exchangerate' => $exchange_rate,
                 'unit' => $unit
             ]);
+    }
+    public function fetchallforsearch($id,$status,$type){
+        $query = Transaction::query();
+        if (!is_null($id)) {
+            $query->where('user_id', $id);
+        }
+    
+        if (!is_null($status)) {
+            $query->where('status', $status);
+        }
+    
+        if (!is_null($type)) {
+            $query->where('type', $type);
+        }
+        $data=$query->get();
+        
+        foreach ($data as &$row) {
+            // $row->from_currency=$row['fromcurrency']['code'];
+            $row->from_currency=$row['fromcurrency']['code'] . ' ' . $row['from_amount'];
+            $row->to_currency=$row['tocurrency']['code']. ' ' . $row['to_amount'];
+            $row->name=$row['user']['name'];
+            $row->action_buttons = $this->generateActionButtons($row);
+            
+        }
+        return $data;
     }
     
 }

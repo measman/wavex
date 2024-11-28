@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CurrencyResource;
 use App\Http\Resources\ExchangeRateResource;
 use App\Http\Resources\TransactionResource;
+use App\Http\Resources\UserResource;
 use App\Models\Currency;
 use App\Models\ExchangeRate;
 use App\Models\Settings;
 use App\Models\Transaction;
+use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,18 +34,10 @@ class TransactionController extends Controller
 
     public function index(Request $request)
     {
-
-        $user_id = Auth::user()->id;
-        $transactionQuery = Transaction::where('user_id', $user_id)
-            ->search($request->input('search'));
-        $transactions = TransactionResource::collection(
-            $transactionQuery->paginate(10)
-        );
+        $user=User::all();
         $authToken = session('auth_token');
-        //dd($authToken);
         return Inertia::render('Admin/Transactions/index', [
-            'transactions' => $transactions,
-            'search' => $request->input('search') ?? '',
+            'users'=>$user,
             'token'=>$authToken
         ]);
     }
