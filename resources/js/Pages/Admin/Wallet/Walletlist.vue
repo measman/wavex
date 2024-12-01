@@ -28,6 +28,7 @@ onMounted(() => {
             { data: 'name' },
             { data: 'code' },
             { data: 'total_balance' },
+            { data: 'avg_exchange_rate' },
         ],
         destroy: true,
 
@@ -77,6 +78,9 @@ div.dt-container select.dt-input {
                                                 Currency</th>
                                             <th scope="col"
                                                 class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Balance
+                                            </th>
+                                            <th scope="col"
+                                                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Exchange Rate
                                             </th>
                                         </tr>
                                     </thead>

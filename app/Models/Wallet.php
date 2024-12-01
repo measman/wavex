@@ -11,7 +11,7 @@ class Wallet extends Model
     /** @use HasFactory<\Database\Factories\WalletFactory> */
     use HasFactory;
 
-    protected $fillable = ['user_id', 'currency_id', 'balance'];
+    protected $fillable = ['user_id', 'currency_id', 'balance','avgexrate_buy','avgexrate_sell'];
     // protected $with =['user','currency'];
 
     public function user()
@@ -38,10 +38,20 @@ public function fetchall(){
 
     $transactions = Wallet::leftJoin('users', 'users.id', '=', 'wallets.user_id')
     ->leftJoin('currencies', 'currencies.id', '=', 'wallets.currency_id')
-    ->select('wallets.user_id', 'users.name', 'currencies.code', DB::raw('SUM(wallets.balance) as total_balance'))
+    ->select(
+        'wallets.user_id', 
+        'users.name', 
+        'currencies.code', 
+        DB::raw('SUM(wallets.balance) as total_balance'),
+        DB::raw('ROUND(
+            (SUM(wallets.avgexrate_buy * wallets.balance) + SUM(wallets.avgexrate_sell * wallets.balance)) / 
+            (SUM(wallets.balance)), 2
+        ) as avg_exchange_rate')
+    )
     ->groupBy('wallets.user_id', 'users.name', 'currencies.code')
     ->get();
-    return($transactions);
+
+return $transactions;
 }
 
 }
