@@ -16,6 +16,8 @@ return new class extends Migration {
             $table->foreignId('currency_id')->constrained();
             $table->decimal('balance', 15, 2)->default(0);
             //$table->unique(['user_id', 'currency_id']);
+            $table->decimal('avgexrate_buy', 15, 2)->default(0);
+            $table->decimal('avgexrate_sell', 15, 2)->default(0);
             $table->timestamps();
         });
     }
