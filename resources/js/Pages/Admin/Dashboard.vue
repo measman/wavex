@@ -193,7 +193,7 @@ const walletsubmit = () => {
 <template>
     <AdminLayout>
         <div id="walletModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
-            <div class="bg-white rounded-lg shadow-lg w-96 max-h-[60vh] overflow-y-auto relative z-50">
+            <div class="bg-white rounded-lg shadow-lg w-[60rem] max-h-[60vh] overflow-y-auto relative z-50">
                 <!-- Modal Header -->
                 <div class="flex justify-between items-center border-b p-4">
                     <h2 class="text-lg font-bold">Opening Balance</h2>
@@ -795,7 +795,7 @@ const walletsubmit = () => {
             </div>
         </div>
         <div class="bg-gray-100 py-10">
-            <div class="mx-auto max-w-7xl">
+            <div class="mx-auto max-w-8xl">
                 <div class="px-4 sm:px-6 lg:px-8">
                     <div class="sm:flex sm:items-center">
                         <div class="sm:flex-auto">
