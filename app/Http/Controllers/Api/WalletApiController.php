@@ -18,4 +18,8 @@ class WalletApiController extends Controller
         $data = $this->wallet->fetchall();
         return response()->json(['data' => $data]);
     }
+    public function openingbalance(Request $request){
+        $this->wallet->insertopeningbalance($request);
+        return response()->json(['message' => 'Opening Balance successfully.']);
+    }
 }

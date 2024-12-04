@@ -122,14 +122,24 @@ class DailyStatusController extends Controller
                     }
                 }
 
-                // Insert the data into the Wallet table
-                Wallet::create([
-                    'user_id' => $userId,
-                    'currency_id' => $currencyId,
-                    'balance' => $balance,
-                    'avgexrate_buy' => $avgBuyRate,
-                    'avgexrate_sell' => $avgSellRate,
-                ]);
+                if ($currencyId == 7) {
+                    Wallet::create([
+                        'user_id' => $userId,
+                        'currency_id' => $currencyId,
+                        'balance' => $balance,
+                        'avgexrate_buy' => $avgBuyRate,
+                        'avgexrate_sell' => 1,
+                    ]);
+                } else {
+                    Wallet::create([
+                        'user_id' => $userId,
+                        'currency_id' => $currencyId,
+                        'balance' => $balance,
+                        'avgexrate_buy' => $avgBuyRate,
+                        'avgexrate_sell' => $avgSellRate,
+
+                    ]);
+                }
             }
         }
 

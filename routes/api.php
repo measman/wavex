@@ -23,5 +23,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('transactionupdate', [TransactionApiController::class, 'transactionupdate']);
     Route::post('transactiondelete', [TransactionApiController::class, 'transactiondelete']);
     Route::post('transactionsearch', [TransactionApiController::class, 'transactionsearch']);
+    Route::post('openingbalance', [WalletApiController::class, 'openingbalance']);
     Route::get('/walletinfo', [WalletApiController::class, 'walletinfo']);
 });
