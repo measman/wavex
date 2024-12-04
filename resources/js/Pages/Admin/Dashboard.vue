@@ -136,10 +136,15 @@ onMounted(() => {
 
 <template>
     <AdminLayout>
-        <div
-            class="bg-blue-100 text-blue-800 font-bold rounded-lg p-4 shadow-md mb-4 text-right"
+        <div v-if="props.daily_status.data.status === 'day_start'"
+            class="bg-blue-100 text-blue-800 font-bold rounded-lg p-4 shadow-md mb-4 "
         >
-            Daily Status : {{ props.daily_status.data.status }}
+            {{ props.daily_status.data.date }} : Day Started!
+        </div>
+        <div v-else
+            class="bg-red-100 text-blue-800 font-bold rounded-lg p-4 shadow-md mb-4 "
+        >
+            {{ props.daily_status.data.date }} : Day Ended!
         </div>
         <div
             class="grid w-full grid-cols-1 gap-4 mt-4 xl:grid-cols-2 2xl:grid-cols-3"
