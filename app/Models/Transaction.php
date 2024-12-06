@@ -28,18 +28,20 @@ class Transaction extends Model
         'unit'
     ];
 
-    protected $with = ['user', 'tocurrency','fromcurrency', 'fees'];
+    protected $with = ['user', 'tocurrency', 'fromcurrency', 'fees'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function tocurrency(){
-        return $this->belongsTo(Currency::class,'to_currency_id');
+    public function tocurrency()
+    {
+        return $this->belongsTo(Currency::class, 'to_currency_id');
     }
-    public function fromcurrency(){
-        return $this->belongsTo(Currency::class,'from_currency_id');
+    public function fromcurrency()
+    {
+        return $this->belongsTo(Currency::class, 'from_currency_id');
     }
 
 
@@ -60,25 +62,31 @@ class Transaction extends Model
         });
     }
 
-    public function getextrainfo() {
+    public function getextrainfo()
+    {
         $response = [];
         $response['id'] = $this->select('id')
-                               ->orderBy('id', 'desc')
-                               ->first()?->id;
+            ->orderBy('id', 'desc')
+            ->first()?->id;
         $response['date'] = Carbon::today()->toDateString();
         return $response;
     }
-    
-    public function fetchall(){
+
+    public function fetchall()
+    {
         $data = Transaction::all();
         foreach ($data as &$row) {
-            // $row->from_currency=$row['fromcurrency']['code'];
-            $row->from_currency=$row['fromcurrency']['code'] . ' ' . $row['from_amount'];
-            $row->to_currency=$row['tocurrency']['code']. ' ' . $row['to_amount'];
-            $row->name=$row['user']['name'];
-            $row->action_buttons = $this->generateActionButtons($row);
-            
+            $row->from_currency = $row['fromcurrency']['code'] . ' ' . $row['from_amount'];
+            $row->to_currency = $row['tocurrency']['code'] . ' ' . $row['to_amount'];
+            $row->name = $row['user']['name'];
+            $createdDate = Carbon::parse($row['created_at'])->toDateString();
+            if ($createdDate == Carbon::today()->toDateString()) {
+                $row->action_buttons = $this->generateActionButtons($row);
+            } else {
+                $row->action_buttons = $this->generateActionButtondisabled($row);
+            }
         }
+
         return $data;
     }
 
@@ -94,8 +102,23 @@ class Transaction extends Model
             <i class="icon fa fa-trash mr-1"></i>Delete
         </button>';
     }
+    public function generateActionButtondisabled($row)
+    {
+        // return '
+        // <button type="button" title="Edit" data-id="' . $row->id . '" 
+        //         class="transaction-edit bg-blue-500 hover:bg-blue-600 text-white font-medium py-1 px-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50" 
+        //         disabled>
+        //     <i class="icon fa fa-edit mr-1"></i>Edit
+        // </button>
+        // <button type="button" title="Delete" data-id="' . $row->id . '" 
+        //         class="transaction-delete bg-red-600 hover:bg-red-700 text-white font-medium py-1 px-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 ml-2" 
+        //         disabled>
+        //     <i class="icon fa fa-trash mr-1"></i>Delete
+        // </button>';
+    }
 
-    public function updatetransactioninfo($request){
+    public function updatetransactioninfo($request)
+    {
         $transaction = Transaction::find($request->id);
         $transaction->status = $request->status;
         $transaction->save();
@@ -136,41 +159,40 @@ class Transaction extends Model
         int $unit
     ) {
         Transaction::create([
-                'user_id' => $user_id,
-                'from_currency_id' => $from_curency_id,
-                'to_currency_id' => $to_curency_id,
-                'from_amount' => $amount_to,
-                'to_amount' => $amount_from,
-                'status' => 'Completed',
-                'type' => $type,
-                'exchangerate' => $exchange_rate,
-                'unit' => $unit
-            ]);
+            'user_id' => $user_id,
+            'from_currency_id' => $from_curency_id,
+            'to_currency_id' => $to_curency_id,
+            'from_amount' => $amount_to,
+            'to_amount' => $amount_from,
+            'status' => 'Completed',
+            'type' => $type,
+            'exchangerate' => $exchange_rate,
+            'unit' => $unit
+        ]);
     }
-    public function fetchallforsearch($id,$status,$type){
+    public function fetchallforsearch($id, $status, $type)
+    {
         $query = Transaction::query();
         if (!is_null($id)) {
             $query->where('user_id', $id);
         }
-    
+
         if (!is_null($status)) {
             $query->where('status', $status);
         }
-    
+
         if (!is_null($type)) {
             $query->where('type', $type);
         }
-        $data=$query->get();
-        
+        $data = $query->get();
+
         foreach ($data as &$row) {
             // $row->from_currency=$row['fromcurrency']['code'];
-            $row->from_currency=$row['fromcurrency']['code'] . ' ' . $row['from_amount'];
-            $row->to_currency=$row['tocurrency']['code']. ' ' . $row['to_amount'];
-            $row->name=$row['user']['name'];
+            $row->from_currency = $row['fromcurrency']['code'] . ' ' . $row['from_amount'];
+            $row->to_currency = $row['tocurrency']['code'] . ' ' . $row['to_amount'];
+            $row->name = $row['user']['name'];
             $row->action_buttons = $this->generateActionButtons($row);
-            
         }
         return $data;
     }
-    
 }

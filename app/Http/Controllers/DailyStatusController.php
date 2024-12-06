@@ -14,7 +14,8 @@ class DailyStatusController extends Controller
 {
     public function index()
     {
-        $daily_status = DailyStatus::orderBy('date', 'desc')->first();
+        $daily_status = DailyStatus::where('status','day_start')
+        ->orderBy('date', 'asc')->first();
         return Inertia::render('Admin/Dailystatus/index', ['dailystatus' => $daily_status]);
     }
 
