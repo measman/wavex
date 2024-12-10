@@ -204,34 +204,68 @@ const submitForm = () => {
 
                 <!-- Right Section: New Content -->
                 <div class="space-y-6 sm:px-6 lg:px-0 lg:col-span-4">
-                    <div class="p-4 bg-white shadow rounded-lg">
-                        <h3 class="text-lg font-medium text-gray-900">
-                            Transaction Summary
-                        </h3>
-                        <p class="mt-2 text-sm text-gray-500">
-                            Review transaction details before submitting.
+                    <div class="p-6 bg-white shadow-lg rounded-xl border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mr-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900">
+                                Transaction Summary
+                            </h3>
+                        </div>
+                        
+                        <p class="mb-6 text-sm text-gray-600 bg-indigo-50 p-3 rounded-lg">
+                            Please review your transaction details carefully before proceeding with submission.
                         </p>
-                        <ul class="mt-4 space-y-2 text-sm text-gray-700">
-                            <li>
-                                <strong>Transaction ID:</strong>
-                                #{{ props.extrainfo.id + 1 }}
-                            </li>
-                            <li>
-                                <strong>Transaction Date:</strong>
-                                {{ props.extrainfo.date }}
-                            </li>
-                            <li>
-                                <strong>Exchange Type:</strong> {{ form.type }}
-                            </li>
-                            <li>
-                                <strong>Currency:</strong>
-                                {{ form.excurrency.code }}
-                            </li>
-                            <li>
-                                <strong>Amount:</strong> {{ form.amount_from }}
-                            </li>
-                            <li><strong>Converted Amount:</strong> NPR <span id="camount">{{ convertedamount }}</span></li>
-                        </ul>
+
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <div class="text-sm text-gray-500 mb-1">Transaction ID</div>
+                                <div class="font-semibold text-gray-900">#{{ props.extrainfo.id + 1 }}</div>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <div class="text-sm text-gray-500 mb-1">Transaction Date</div>
+                                <div class="font-semibold text-gray-900">{{ props.extrainfo.date }}</div>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <div class="text-sm text-gray-500 mb-1">Exchange Type</div>
+                                <div class="font-semibold text-gray-900">{{ form.type }}</div>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <div class="text-sm text-gray-500 mb-1">Currency</div>
+                                <div class="font-semibold text-gray-900">{{ form.excurrency.code }}</div>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <div class="text-sm text-gray-500 mb-1">Exchange Rate</div>
+                                <div class="font-semibold text-gray-900">{{ form.exchange_rate }}</div>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <div class="text-sm text-gray-500 mb-1">Unit</div>
+                                <div class="font-semibold text-gray-900">{{ form.unit }}</div>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <div class="text-sm text-gray-500 mb-1">Amount to Exchange</div>
+                                <div class="font-semibold text-gray-900">{{ form.excurrency.code }} {{ form.amount_from }}</div>
+                            </div>
+                        </div>
+
+                        <div class="p-6 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-xl shadow-md">
+                            <div class="flex justify-between items-center">
+                                <div class="text-white">
+                                    <div class="text-sm opacity-80 mb-1">Amount to Receive</div>
+                                    <div class="text-3xl font-bold">
+                                        NPR <span id="camount">{{ convertedamount }}</span>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-3 rounded-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
