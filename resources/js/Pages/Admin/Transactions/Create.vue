@@ -77,37 +77,26 @@ watch(
     }
 );
 
+// Add these new watchers
+watch(
+    () => form.exchange_rate,
+    (rate) => {
+        toamount(form.amount_from);
+    }
+);
+
+watch(
+    () => form.unit,
+    (unit) => {
+        toamount(form.amount_from);
+    }
+);
+
 const toamount = (amount) => {
     var newamount = amount;
     var exrate = form.exchange_rate;
     var unit = form.unit;
-    convertedamount = (newamount / unit) * exrate;
-};
-watch(
-    () => form.exchange_rate,
-    (rate) => {
-        toamount_rate(rate);
-    }
-);
-
-const toamount_rate = (rate) => {
-    var newamount = form.amount_from;
-    var exrate =  rate;
-    var unit = form.unit;
-    convertedamount = (newamount / unit) * exrate;
-};
-watch(
-    () => form.unit,
-    (unit) => {
-        toamount_unit(unit);
-    }
-);
-
-const toamount_unit = (unit) => {
-    var newamount = form.amount_from;
-    var exrate = form.exchange_rate;
-    var unit = unit;
-    convertedamount = (newamount / unit) * exrate;
+    convertedamount.value = (newamount / unit) * exrate;
 };
 
 // Function to submit the form
