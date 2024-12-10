@@ -1,22 +1,42 @@
 <script setup>
 import { usePage, Link, useForm, router } from '@inertiajs/vue3';
 import Pagination from '@/Components/Pagination.vue';
-import { ref, computed, watch } from "vue";
+import { ref, computed } from "vue";
+
 let props = defineProps({
     dailystatus: {
         type: Object,
-        required: true
+        required: false,
+        default: () => ({})
     }
 });
+
 const form = useForm({});
+const todayDate = new Date().toISOString().split('T')[0];
+
+const status = computed(() => {
+    if (!props.dailystatus || !props.dailystatus.status) {
+        return 'day_end';
+    }
+    return props.dailystatus.status;
+});
+
+const displayDate = computed(() => {
+    if (!props.dailystatus || !props.dailystatus.date) {
+        return todayDate;
+    }
+    return props.dailystatus.date;
+});
+
+const isButtonDisabled = computed(() => {
+    return !props.dailystatus || status.value === 'day_end';
+});
+
 const dailyStatusEnd = () => {
-    let id = props.dailystatus.id;
-    console.log(id);
-    form.post(route('dailystatus.insertstatus',id));
+    if (props.dailystatus && props.dailystatus.id) {
+        form.post(route('dailystatus.insertstatus', props.dailystatus.id));
+    }
 }
-
-
-
 </script>
 
 <template>
@@ -54,17 +74,22 @@ const dailyStatusEnd = () => {
                                     </thead>
                                     <tbody class="divide-y divide-gray-200 bg-white">
                                         <tr>
-                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{
-                                                dailystatus.date }}</td>
-                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{
-                                                dailystatus.status }}</td>
-                                            <td
-                                                class="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
-                                                <Link @click="dailyStatusEnd()" :class="{
-                                                    'cursor-not-allowed opacity-50': dailystatus.status === 'day_end',
-                                                    'text-indigo-600 hover:text-indigo-900': dailystatus.status !== 'day_end'
-                                                }" :disabled="dailystatus.status === 'day_end'">
-                                                Close Day
+                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                {{ displayDate }}
+                                            </td>
+                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                {{ status }}
+                                            </td>
+                                            <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">
+                                                <Link 
+                                                    @click="dailyStatusEnd()" 
+                                                    :class="{
+                                                        'cursor-not-allowed opacity-50': isButtonDisabled,
+                                                        'text-indigo-600 hover:text-indigo-900': !isButtonDisabled
+                                                    }" 
+                                                    :disabled="isButtonDisabled"
+                                                >
+                                                    Close Day
                                                 </Link>
                                             </td>
                                         </tr>
