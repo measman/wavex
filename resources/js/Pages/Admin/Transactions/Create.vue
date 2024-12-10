@@ -70,32 +70,24 @@ const getliveratesnew = (excurrency) => {
         }
     });
 };
-watch(
-    () => form.amount_from,
-    (amount) => {
-        toamount(amount);
-    }
-);
-
-// Add these new watchers
-watch(
-    () => form.exchange_rate,
-    (rate) => {
-        toamount(form.amount_from);
-    }
-);
 
 watch(
-    () => form.unit,
-    (unit) => {
-        toamount(form.amount_from);
+    () => [form.amount_from, form.exchange_rate, form.unit],
+    ([amount, exchangeRate, unit]) => {
+        toamount(amount, exchangeRate, unit);
     }
 );
-
-const toamount = (amount) => {
+/**
+ * Calculates the converted amount based on the given amount, exchange rate and unit.
+ * @param {number} amount - The amount to be converted.
+ * @param {number} excahngerates - The exchange rate.
+ * @param {number} unit - The unit of the currency.
+ * @returns {void}
+ */
+const toamount = (amount, excahngerates, unit) => {
     var newamount = amount;
-    var exrate = form.exchange_rate;
-    var unit = form.unit;
+    var exrate = excahngerates;
+    var unit = unit;
     convertedamount.value = (newamount / unit) * exrate;
 };
 
