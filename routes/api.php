@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\FeeApiController;
+use App\Http\Controllers\Api\LocalTransactionApiController;
 use App\Http\Controllers\Api\TransactionApiController;
 use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\Api\WalletApiController;
@@ -25,4 +26,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('transactionsearch', [TransactionApiController::class, 'transactionsearch']);
     Route::post('openingbalance', [WalletApiController::class, 'openingbalance']);
     Route::get('/walletinfo', [WalletApiController::class, 'walletinfo']);
+    Route::get('/localtransactioninfo', [LocalTransactionApiController::class, 'localtransactioninfo']);
+    Route::post('localtransactionedit', [LocalTransactionApiController::class, 'localtransactionedit']);
+    Route::post('localtransactionupdate', [LocalTransactionApiController::class, 'localtransactionupdate']);
+    Route::post('localtransactiondelete', [LocalTransactionApiController::class, 'localtransactiondelete']);
 });

@@ -33,9 +33,9 @@ class BankTrasnsactionRequest extends FormRequest
             'remarks' => 'nullable|string|max:500',
             'sender_bank_branch' => 'required|string|max:255',
             'receiver_bank_branch' => 'required|string|max:255',
-            'sender_contact' => 'required|string|max:15', // Adjust max length as needed
-            'receiver_contact' => 'required|string|max:15', // Adjust max length as needed
-            'created_by' => 'required|exists:users,id', // Assuming created_by references users table
+            'sender_contact' => 'required|numeric|digits:10',
+            'receiver_contact' => 'required|numeric|digits:10',
+            'created_by' => 'required', 
         ];
     }
 
