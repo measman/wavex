@@ -35,8 +35,8 @@ class BankTransactionController extends Controller
         return Inertia::render('Admin/Banktransaction/Create',['users'=>$users]); // Correct spelling
     }
 
-    public function store(BankTrasnsactionRequest $request) {
-        BankTransaction::create($request->validated());
+    public function store(Request $request) {
+        BankTransaction::create($request->all());
         return redirect()->route('banktransactions.index');
     } 
     public function edit(BankTransaction $banktransaction)
@@ -48,10 +48,11 @@ class BankTransactionController extends Controller
         ]);
     }
 
-    public function update(BankTrasnsactionRequest $request, BankTransaction $banktransaction){
-        $banktransaction->update($request->validated());
+    public function update(Request $request, BankTransaction $banktransaction) {
+        $banktransaction->update($request->all());
         return redirect()->route('banktransactions.index');
     }
+    
     
     public function destroy($bankid)
     {
