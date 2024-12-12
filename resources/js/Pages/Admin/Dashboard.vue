@@ -13,7 +13,7 @@ const props = defineProps({
     todayexchangerate: Array,
     wallet: Array,
     currencies: Array,
-    token:String
+    token: String
 });
 
 
@@ -151,20 +151,31 @@ onMounted(() => {
 let baseUrl = window.location.origin;
 let endpointforopeningbalance = '/api/openingbalance';
 const form = reactive({});
+props.currencies.forEach(currency => {
+    form[currency.id] = {
+        balance: '',
+        exchange_rate: '' // Initialize exchange rate empty
+    };
+});
+
 const walletsubmit = () => {
-    // Collect all currency IDs and their corresponding balances
+    // Collect all currency data with balances and exchange rates
     const balances = Object.keys(form).map(currencyId => ({
         currencyId,
-        balance: form[currencyId]
+        balance: form[currencyId].balance,
+        exchange_rate: form[currencyId].exchange_rate || 1, // Default exchange rate to 1 if empty
     }));
-    console.log(balances); 
+
+    console.log("Submitting balances:", balances);
+
+    // Perform AJAX request
     $.ajax({
         url: baseUrl + endpointforopeningbalance,
         headers: {
-            'Authorization': 'Bearer ' + usePage().props.token
+            'Authorization': 'Bearer ' + props.token
         },
         method: "POST",
-        data: form,
+        data: { balances }, // Send as an object
         dataType: "JSON",
         success: function (data) {
             Swal.fire({
@@ -201,27 +212,34 @@ const walletsubmit = () => {
                 <!-- Modal Body -->
                 <form @submit.prevent="walletsubmit">
                     <div v-for="(currency, index) in currencies" :key="currency.id" class="px-4 py-3">
-                        <label :for="'balance_' + currency.id" class="block text-sm font-medium text-gray-700">{{
-                            currency.code }}</label>
-                        <input type="number" :id="'balance_' + currency.id" v-model="form[currency.id]"
+                        <label :for="'balance_' + currency.id" class="block text-sm font-medium text-gray-700">
+                            {{ currency.code }}
+                        </label>
+                        <input type="number" :id="'balance_' + currency.id" v-model="form[currency.id].balance"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             placeholder="Enter opening balance" />
+                        <label :for="'exchange_rate_' + currency.id"
+                            class="block text-sm font-medium text-gray-700 mt-2">
+                            Exchange Rate
+                        </label>
+                        <input type="number" step="0.01" :id="'exchange_rate_' + currency.id"
+                            v-model="form[currency.id].exchange_rate"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Enter exchange rate" />
                     </div>
                     <!-- Submit button -->
                     <div class="px-4 py-3 bg-gray-50 text-right">
                         <button type="submit" class="bg-indigo-600 text-white rounded-md px-4 py-2">Save</button>
                     </div>
                 </form>
+
             </div>
         </div>
         <div v-if="props.daily_status.data.status === 'day_start'"
-            class="bg-blue-100 text-blue-800 font-bold rounded-lg p-4 shadow-md mb-4 "
-        >
+            class="bg-blue-100 text-blue-800 font-bold rounded-lg p-4 shadow-md mb-4 ">
             {{ props.daily_status.data.date }} : Day Started!
         </div>
-        <div v-else
-            class="bg-red-100 text-blue-800 font-bold rounded-lg p-4 shadow-md mb-4 "
-        >
+        <div v-else class="bg-red-100 text-blue-800 font-bold rounded-lg p-4 shadow-md mb-4 ">
             {{ props.daily_status.data.date }} : Day Ended!
         </div>
         <div class="grid w-full grid-cols-1 gap-4 mt-4 xl:grid-cols-2 2xl:grid-cols-3">

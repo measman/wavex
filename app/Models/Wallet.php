@@ -62,16 +62,16 @@ class Wallet extends Model
         return $transactions;
     }
 
-    public function insertopeningbalance($request)
+    public function insertopeningbalance($balanceData)
     {
-        $input = $request->all();
-       // Log::info($input); // Log the extracted array
-        foreach ($input as $currency_id => $balance) {
-            Wallet::create([
-                'user_id' => Auth::user()->id,
-                'currency_id' => $currency_id, 
-                'balance' => $balance          
-            ]);
-        }
+        $defaultCurrencyId = Settings::where('user_id', Auth::user()->id)->value('currency_id');
+        $exchangeRate = ($balanceData['currencyId'] == $defaultCurrencyId) ? 1 : $balanceData['exchange_rate'];
+        Wallet::create([
+            'user_id' => Auth::user()->id,
+            'currency_id' => $balanceData['currencyId'],
+            'balance' => $balanceData['balance'],
+            'avgexrate_sell' => $exchangeRate,
+        ]);
     }
+    
 }
