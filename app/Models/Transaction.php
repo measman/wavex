@@ -75,14 +75,23 @@ class Transaction extends Model
     public function fetchall()
     {
         $data = Transaction::all();
-        $ongoing_dailystatus_date= DailyStatus::where('status', 'day_start')->orderby('date', 'asc')->first();
-        //Log::info($ongoing_dailystatus_date->date);
+        $ongoing_dailystatus_dates = DailyStatus::where('status', 'day_start')
+            ->orderBy('date', 'asc')
+            ->get(); 
+
+        $comapredates = [];
+        foreach ($ongoing_dailystatus_dates as $ongoingDate) {
+            $comapredates[] = $ongoingDate->date; 
+        }
+
+        //Log::info($comapredates);
+
         foreach ($data as &$row) {
             $row->from_currency = $row['fromcurrency']['code'] . ' ' . $row['from_amount'];
             $row->to_currency = $row['tocurrency']['code'] . ' ' . $row['to_amount'];
             $row->name = $row['user']['name'];
             $createdDate = Carbon::parse($row['created_at'])->toDateString();
-            if ($createdDate == $ongoing_dailystatus_date->date) {
+            if (in_array($createdDate, $comapredates)) { 
                 $row->action_buttons = $this->generateActionButtons($row);
             } else {
                 $row->action_buttons = $this->generateActionButtondisabled($row);
@@ -187,14 +196,21 @@ class Transaction extends Model
             $query->where('type', $type);
         }
         $data = $query->get();
-        $ongoing_dailystatus_date= DailyStatus::where('status', 'day_start')->orderby('date', 'asc')->first();
+        $ongoing_dailystatus_dates = DailyStatus::where('status', 'day_start')
+            ->orderBy('date', 'asc')
+            ->get(); 
+
+        $comapredates = [];
+        foreach ($ongoing_dailystatus_dates as $ongoingDate) {
+            $comapredates[] = $ongoingDate->date; 
+        }
         foreach ($data as &$row) {
             // $row->from_currency=$row['fromcurrency']['code'];
             $row->from_currency = $row['fromcurrency']['code'] . ' ' . $row['from_amount'];
             $row->to_currency = $row['tocurrency']['code'] . ' ' . $row['to_amount'];
             $row->name = $row['user']['name'];
             $createdDate = Carbon::parse($row['created_at'])->toDateString();
-            if ($createdDate == $ongoing_dailystatus_date->date) {
+            if (in_array($createdDate, $comapredates)) { 
                 $row->action_buttons = $this->generateActionButtons($row);
             } else {
                 $row->action_buttons = $this->generateActionButtondisabled($row);
