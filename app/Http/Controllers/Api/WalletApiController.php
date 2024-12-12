@@ -14,12 +14,17 @@ class WalletApiController extends Controller
     {
         $this->wallet = $wallet;
     }
-    public function walletinfo(){
+    public function walletinfo()
+    {
         $data = $this->wallet->fetchall();
         return response()->json(['data' => $data]);
     }
-    public function openingbalance(Request $request){
-        $this->wallet->insertopeningbalance($request);
+    public function openingbalance(Request $request)
+    {
+        $balances = $request->input('balances'); // Retrieve balances array
+        foreach ($balances as $balanceData) {
+            $this->wallet->insertopeningbalance($balanceData);
+        }
         return response()->json(['message' => 'Opening Balance successfully.']);
     }
 }

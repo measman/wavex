@@ -50,8 +50,8 @@ class Wallet extends Model
                 DB::raw('SUM(wallets.balance) as total_balance'),
                 DB::raw('ROUND(
                     CASE 
-                        WHEN COUNT(wallets.id) - 1 = 0 THEN 0
-                        ELSE (SUM(wallets.avgexrate_buy) + SUM(wallets.avgexrate_sell)) / (COUNT(wallets.id) - 1)
+                        WHEN COUNT(wallets.id) = 0 THEN 0
+                        ELSE (SUM(wallets.avgexrate_buy) + SUM(wallets.avgexrate_sell)) / (COUNT(wallets.id))
                     END, 2
                 ) as avg_exchange_rate')
             )
@@ -62,16 +62,16 @@ class Wallet extends Model
         return $transactions;
     }
 
-    public function insertopeningbalance($request)
+    public function insertopeningbalance($balanceData)
     {
-        $input = $request->all();
-       // Log::info($input); // Log the extracted array
-        foreach ($input as $currency_id => $balance) {
-            Wallet::create([
-                'user_id' => Auth::user()->id,
-                'currency_id' => $currency_id, 
-                'balance' => $balance          
-            ]);
-        }
+        $defaultCurrencyId = Settings::where('user_id', Auth::user()->id)->value('currency_id');
+        $exchangeRate = ($balanceData['currencyId'] == $defaultCurrencyId) ? 1 : $balanceData['exchange_rate'];
+        Wallet::create([
+            'user_id' => Auth::user()->id,
+            'currency_id' => $balanceData['currencyId'],
+            'balance' => $balanceData['balance'],
+            'avgexrate_buy' => $exchangeRate,
+        ]);
     }
+    
 }
