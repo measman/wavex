@@ -209,7 +209,7 @@ class Transaction extends Model
             $row->from_currency = $row['fromcurrency']['code'] . ' ' . $row['from_amount'];
             $row->to_currency = $row['tocurrency']['code'] . ' ' . $row['to_amount'];
             $row->name = $row['user']['name'];
-            $createdDate = Carbon::parse($row['created_at'])->toDateString();
+            $createdDate = Carbon::parse($row['created_at'])->toDateString();//array
             if (in_array($createdDate, $comapredates)) { 
                 $row->action_buttons = $this->generateActionButtons($row);
             } else {
