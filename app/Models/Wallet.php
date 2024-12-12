@@ -50,8 +50,8 @@ class Wallet extends Model
                 DB::raw('SUM(wallets.balance) as total_balance'),
                 DB::raw('ROUND(
                     CASE 
-                        WHEN COUNT(wallets.id) - 1 = 0 THEN 0
-                        ELSE (SUM(wallets.avgexrate_buy) + SUM(wallets.avgexrate_sell)) / (COUNT(wallets.id) - 1)
+                        WHEN COUNT(wallets.id) = 0 THEN 0
+                        ELSE (SUM(wallets.avgexrate_buy) + SUM(wallets.avgexrate_sell)) / (COUNT(wallets.id))
                     END, 2
                 ) as avg_exchange_rate')
             )
@@ -70,7 +70,7 @@ class Wallet extends Model
             'user_id' => Auth::user()->id,
             'currency_id' => $balanceData['currencyId'],
             'balance' => $balanceData['balance'],
-            'avgexrate_sell' => $exchangeRate,
+            'avgexrate_buy' => $exchangeRate,
         ]);
     }
     
